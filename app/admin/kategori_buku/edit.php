@@ -7,11 +7,10 @@ include('session.php');
 $id = @$_GET['id'];
 
 // Fetech user data based on id
-$result = mysqli_query($mysqli, "SELECT * FROM tb_about WHERE id=$id");
+$result = mysqli_query($mysqli, "SELECT * FROM kategori WHERE id=$id");
 
-while ($user_data = mysqli_fetch_array($result)) {
-    $row_judul = $user_data['judul'];
-    $row_isi = $user_data['isi'];
+while ($kategori = mysqli_fetch_array($result)) {
+    $row_kategori = $kategori['nama_kategori'];
 }
 ?>
 <?php
@@ -19,16 +18,13 @@ while ($user_data = mysqli_fetch_array($result)) {
 // Check if form is submitted for user update, then redirect to homepage after update
 if (isset($_POST['update'])) {
     $id = $_POST['id'];
-    $judul_about = $_POST['judul_about'];
-    $isi_about = $_POST['isi_about'];
-    
-    
-        $result = mysqli_query($mysqli, "UPDATE tb_about SET judul='$judul_about',isi='$isi_about' WHERE id=$id");
-    
+
+    $nama_kategori = @$_POST['kategori'];
+    $result = mysqli_query($mysqli, "UPDATE kategori SET nama_kategori='$nama_kategori' WHERE id=$id");
     // update user data
 
     // Redirect to homepage to display updated user in list
-    header("Location:../dashboard.php?page=about");
+    header("Location:../dashboard.php?page=kategori_buku");
 }
 ?>
 
@@ -69,11 +65,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Data about</h3>
+                                    <h3 class="card-title">Data kategori</h3>
 
                                     <div class="card-tools">
                                         <!-- This will cause the card to maximize when clicked -->
-                                        <a href="<?= $base_url_admin ?>/dashboard.php?page=about" class="btn btn-info">Kembali</a>
+                                        <a href="<?= $base_url_admin ?>/dashboard.php?page=kategori_buku" class="btn btn-info">Kembali</a>
                                     </div>
                                     <!-- /.card-tools -->
                                 </div>
@@ -83,14 +79,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <form  method="post">
                                         <input type="hidden" name="id" value="<?= $id ?>">
                                         <div class="form-group">
-                                            <label for="username">Judul</label>
-                                            <input type="text" class="form-control" value="<?= $row_judul ?>" name="judul_about" required >
+                                            <label for="kategori">kategori</label>
+                                            <input type="text" class="form-control" value="<?= $row_kategori ?>" name="kategori" required <?php if ($row_kategori == 'admin') { ?> readonly <?php } ?>>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="nama_operator">isi</label>
-                                            <input type="text" class="form-control" value="<?= $row_isi ?>" name="isi_about" required>
-                                        </div>
-    
                                         <button class="btn btn-primary" type="submit" name="update">Simpan</button>
 
                                     </form>

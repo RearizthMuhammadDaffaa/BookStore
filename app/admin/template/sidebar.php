@@ -48,6 +48,22 @@ $base_url = "http://localhost/BOOKSTORE/app/admin";
           </a>
         </li>
         <li class="nav-item">
+          <a href="<?= $base_url ?>/dashboard.php?page=buku" class="nav-link  ">
+            <i class="nav-icon fas fa-pen"></i>
+            <p>
+              Buku
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="<?= $base_url ?>/dashboard.php?page=kategori_buku" class="nav-link  ">
+            <i class="nav-icon fas fa-tags"></i>
+            <p>
+              Kategori Buku
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
           <a href="<?= $base_url ?>/dashboard.php?page=kategori_artikel" class="nav-link  ">
             <i class="nav-icon fas fa-tags"></i>
             <p>

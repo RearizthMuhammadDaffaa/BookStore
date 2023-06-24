@@ -11,7 +11,13 @@
                     case 'artikel':
                         include "artikel/index.php";
                         break;
+                    case 'buku':
+                        include "buku/index.php";
+                        break;
 
+                    case 'kategori_buku':
+                        include "kategori_buku/index.php";
+                        break;
                     case 'kategori_artikel':
                         include "kategori_artikel/index.php";
                         break;

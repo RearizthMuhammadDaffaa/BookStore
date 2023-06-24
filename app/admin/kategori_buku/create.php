@@ -2,21 +2,22 @@
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
-include("../../config.php");
-include('session.php');
+// include("../../config.php");
+require_once(__DIR__ . "../../../config.php");
+// include('session.php');
+require 'session.php';
 
 if (isset($_POST['submit'])) {
-    $judul_about = $_POST['judul_about'];
-    $isi_about = $_POST['isi_about'];
-   
-    
-   
-        $result = mysqli_query($mysqli, "INSERT INTO tb_about (judul,isi) VALUES('$judul_about','$isi_about')");
-        header("Location:../dashboard.php?page=about");
-    
-        
+    $nama_kategori = @$_POST['nama_kategori'];
+    $sql = "SELECT * FROM kategori WHERE nama_kategori='$nama_kategori'";
+    $result = mysqli_query($mysqli, $sql);
+    if ($result->num_rows > 0) {
+        echo "<script>alert('Nama Kategori sudah ada. Silahkan coba lagi!')</script>";
+    } else {
+        $result = mysqli_query($mysqli, "INSERT INTO kategori(nama_kategori) VALUES('$nama_kategori')");
+        header("Location:../dashboard.php?page=kategori_buku");
     }
-
+}
 ?>
 <!DOCTYPE html>
 <!--
@@ -56,27 +57,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <div class="card">
 
                                 <div class="card-header">
-                                    <h3 class="card-title">Data Users</h3>
+                                    <h3 class="card-title">Data Kategori Buku
+                                    </h3>
 
                                     <div class="card-tools">
                                         <!-- This will cause the card to maximize when clicked -->
-                                        <a href="<?= $base_url_admin ?>/dashboard.php?page=about" class="btn btn-info">Kembali</a>
+                                        <a href="<?= $base_url_admin ?>/dashboard.php?page=kategori_buku" class="btn btn-info">Kembali</a>
                                     </div>
                                     <!-- /.card-tools -->
                                 </div>
-                                <form action="../about/create.php" method="post" name="form1">
+                                <form action="../kategori_buku/create.php?page=kategori_buku" method="post" name="form1">
 
                                     <div class="card-body">
 
                                         <div class="form-group">
-                                            <label for="username">judul</label>
-                                            <input type="text" class="form-control" name="judul_about" required>
+                                            <label for="nama_kategori">Nama Kategori</label>
+                                            <input type="text" class="form-control" name="nama_kategori" required>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="nama_operator">isi</label>
-                                            <input type="text" class="form-control" name="isi_about" required>
-                                        </div>
-                                        
                                         <!-- /.content -->
 
                                     </div>

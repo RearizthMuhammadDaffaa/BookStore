@@ -14,14 +14,14 @@ if (isset($_POST['submit'])) {
     $username = @$_POST['username'];
     $password = md5(@$_POST['password']);
 
-    $sql = "SELECT * FROM tb_admin WHERE username='$username' AND password='$password'";
+    $sql = "SELECT * FROM tb_user WHERE username='$username' AND password='$password'";
     $result = mysqli_query($mysqli, $sql);
     if ($result->num_rows > 0) {
         $row = mysqli_fetch_assoc($result);
         $_SESSION['username'] = $row['username'];
         $_SESSION['id'] = $row['id'];
 
-        header("Location: ../admin/dashboard.php?page=home");
+        header("Location: ../index.php");
     } else {
         echo "<script>alert('Username atau password Anda salah. Silahkan coba lagi!')</script>";
     }
@@ -55,7 +55,7 @@ if (isset($_POST['submit'])) {
             <div class="card-body">
                 <p class="login-box-msg">Login</p>
 
-                <form action="sign.php" method="post">
+                <form action="sign_user.php" method="post">
                     <div class="input-group mb-3">
                         <input type="text" name="username" class="form-control" placeholder="username" required>
                         <div class="input-group-append">
@@ -79,7 +79,7 @@ if (isset($_POST['submit'])) {
                             <button type="submit" name="submit" class="btn btn-primary btn-block">Sign In</button>
                         </div>
                         <div class="col-6 text-center mt-1" >
-                           <a href="<?= $base_url_admin; ?>/sign_user.php">Login sebagai User</a>
+                           <a href="<?= $base_url_admin; ?>/sign.php">Login sebagai Admin</a>
                         </div>
                         <!-- /.col -->
                     </div>

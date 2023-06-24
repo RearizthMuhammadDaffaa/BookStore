@@ -7,7 +7,7 @@ include('session.php');
 $id = @$_GET['id'];
 
 // Delete user row from table based on given id
-$result = mysqli_query($mysqli, "DELETE FROM tb_admin WHERE id=$id");
+$result = mysqli_query($mysqli, "DELETE FROM tb_about WHERE id=$id");
 
 // After delete redirect to Home, so that latest user list will be displayed.
-header("Location:../dashboard.php?page=users_admin");
+header("Location:../dashboard.php?page=about");

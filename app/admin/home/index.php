@@ -13,8 +13,8 @@ $artikel = mysqli_query($mysqli, 'SELECT count(*) jml FROM tb_artikel');
 $row_artikel = mysqli_fetch_assoc($artikel);
 $users = mysqli_query($mysqli, 'SELECT count(*) jml FROM tb_user');
 $row_users = mysqli_fetch_assoc($users);
-// $menu = mysqli_query($mysqli, 'SELECT count(*) jml FROM tb_menu');
-// $row_menu = mysqli_fetch_assoc($menu);
+$buku = mysqli_query($mysqli, 'SELECT count(*) jml FROM data_buku');
+$row_buku = mysqli_fetch_assoc($buku);
 ?>
 <!-- Main content -->
 <div class="content">
@@ -66,18 +66,18 @@ $row_users = mysqli_fetch_assoc($users);
 
             <div class="col-lg-3 col-6">
 
-                <!-- <div class="small-box bg-danger">
+                <div class="small-box bg-danger">
                     <div class="inner">
                         <h3>
-                            <?= $row_menu['jml'] ?>
+                            <?= $row_buku['jml'] ?>
                         </h3>
-                        <p>Menu</p>
+                        <p>Buku</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-th"></i>
                     </div>
                     <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                </div> -->
+                </div>
             </div>
 
         </div>

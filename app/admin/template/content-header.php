@@ -12,6 +12,12 @@
                     case 'artikel':
                         include "artikel/content-header.php";
                         break;
+                    case 'buku':
+                        include "buku/content-header.php";
+                        break;
+                    case 'kategori_buku':
+                        include "kategori_buku/content-header.php";
+                        break;
                     case 'kategori_artikel':
                         include "kategori_artikel/content-header.php";
                         break;

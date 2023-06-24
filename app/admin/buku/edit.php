@@ -11,11 +11,13 @@ define('SITE_ROOT', realpath(dirname(__FILE__)));
 $id = @$_GET['id'];
 
 // Fetech user data based on id
-$res_artikel = mysqli_query($mysqli, "SELECT * FROM tb_artikel WHERE id= $id ");
+$res_artikel = mysqli_query($mysqli, "SELECT * FROM data_buku WHERE id= $id ");
 
 while ($artikel = mysqli_fetch_array($res_artikel)) {
-    $row_judul_artikel = $artikel['judul_artikel'];
-    $row_content_artikel = $artikel['content_artikel'];
+    $row_judul_buku = $artikel['judul_buku'];
+    $row_deskripsi = $artikel['deskripsi'];
+    $row_harga = $artikel['harga'];
+    $row_jumlah = $artikel['jumlah_buku'];
     $row_kategori = $artikel['id_kategori'];
 }
 ?>
@@ -24,13 +26,14 @@ while ($artikel = mysqli_fetch_array($res_artikel)) {
 // Check if form is submitted for user update, then redirect to homepage after update
 if (isset($_POST['update'])) {
     $id = $_POST['id'];
-    $created_time = date("Y-m-d H:i:s");
     $user_id = $_SESSION['id'];
     $kategori = @$_POST['kategori'];
     $slug = preg_replace('/[^a-z0-9]+/i', '-', trim(strtolower($_POST["judul_artikel"])));
 
-    $judul_artikel = @$_POST['judul_artikel'];
-    $content_artikel  = @$_POST['content_artikel'];
+    $judul_buku = @$_POST['judul_buku'];
+    $deskripsi  = @$_POST['deskripsi'];
+    $harga = @$_POST['harga'];
+    $jumlah_buku = @$_POST['jumlah_buku'];
     var_dump($content_artikel);
     $ekstensi_diperbolehkan    = array('png', 'jpg', 'jpeg');
     $nama = $_FILES['file']['name'];
@@ -49,19 +52,17 @@ if (isset($_POST['update'])) {
         echo 'EKSTENSI FILE YANG DI UPLOAD TIDAK DI PERBOLEHKAN';
         $file_name = '';
     }
-   
-        $file_name = $nama;
-        $result = mysqli_query($mysqli, "UPDATE tb_artikel SET cover='$file_name',judul_artikel='$judul_artikel',
-    content_artikel='$content_artikel',id_kategori='$kategori',user_id='$user_id',created_time='$created_time'
+
+    $file_name = $nama;
+    $result = mysqli_query($mysqli, "UPDATE data_buku SET judul_buku = '$judul_buku', gambar='$file_name',
+    deskripsi='$deskripsi',id_kategori='$kategori',jumlah_buku='$jumlah_buku',harga='$harga'
     WHERE id=$id");
-   
-   
-    
+
 
     // update user data
 
     // Redirect to homepage to display updated user in list
-    header("Location:../dashboard.php?page=artikel");
+    header("Location:../dashboard.php?page=buku");
 }
 ?>
 
@@ -106,26 +107,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                                     <div class="card-tools">
                                         <!-- This will cause the card to maximize when clicked -->
-                                        <a href="<?= $base_url_admin ?>/dashboard.php?page=artikel" class="btn btn-info">Kembali</a>
+                                        <a href="<?= $base_url_admin ?>/dashboard.php?page=buku" class="btn btn-info">Kembali</a>
                                     </div>
                                     <!-- /.card-tools -->
                                 </div>
 
                                 <div class="card-body">
 
-                                    <form  method="post" enctype="multipart/form-data">
+                                    <form method="post" enctype="multipart/form-data">
                                         <input type="hidden" name="id" value="<?= $id ?>">
                                         <div class="form-group">
-                                            <label for="judul_artikel">Judul Artikel</label>
-                                            <input type="text" class="form-control" value="<?= $row_judul_artikel ?>" name="judul_artikel" required>
+                                            <label for="judul_artikel">Judul Buku</label>
+                                            <input type="text" class="form-control" value="<?= $row_judul_buku ?>" name="judul_buku" required>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="content_artikel">Content</label>
-                                            <textarea type="text" class="form-control" name="content_artikel" required><?= $row_content_artikel ?></textarea>
+                                            <label for="content_artikel">Deskripsi</label>
+                                            <textarea type="text" class="form-control" name="deskripsi" required><?= $row_deskripsi ?></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="judul_artikel">Harga</label>
+                                            <input type="text" class="form-control" value="<?= $row_harga ?>" name="harga" required>
                                         </div>
                                         <?php
-                                        $data_kategori = mysqli_query($mysqli, "SELECT * FROM kategori_artikel ORDER BY id = $id DESC");
+                                        $data_kategori = mysqli_query($mysqli, "SELECT * FROM kategori ORDER BY id = $id DESC");
                                         ?>
                                         <div class="form-group">
                                             <label for="kategori">Kategori</label>
@@ -136,7 +141,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <?php } ?>
                                                 <select>
                                         </div>
-                                        <input type="file" name="file">
+                                        <div class="form-group">
+                                            <label>Pilih Gambar</label>
+
+                                            <input type="file" name="file" class="form-control" value="gambar/<?= $icon; ?>" required>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="judul_artikel">Jumlah buku</label>
+                                            <input type="text" class="form-control" value="<?= $row_jumlah ?>" name="jumlah_buku" required>
+                                        </div>
                                         <button class="btn btn-primary" type="submit" name="update">Simpan</button>
 
                                     </form>
