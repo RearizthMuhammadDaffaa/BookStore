@@ -15,7 +15,7 @@ $allArtikel = mysqli_query($mysqli, "SELECT tb_artikel.*,
                             INNER JOIN tb_admin ON tb_artikel.user_id = tb_admin.id
                             ORDER BY id DESC
                             ");
-$batas = 2;
+$batas = 8;
 $halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
 $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
 
@@ -29,7 +29,7 @@ $new_artikel = mysqli_query($mysqli, "SELECT tb_artikel.*,
                             tb_admin.nama_operator
                             FROM tb_artikel
                             INNER JOIN kategori_artikel ON tb_artikel.id_kategori = kategori_artikel.id
-                            INNER JOIN tb_admin ON tb_artikel.user_id = tb_admin.id
+                            INNER JOIN tb_admin ON tb_artikel.user_id = tb_admin.id ORDER BY id DESC
                             LIMIT $halaman_awal, $batas
                            ");
 $artikel = mysqli_query($mysqli, "SELECT tb_artikel.*,
@@ -44,7 +44,6 @@ $artikel = mysqli_query($mysqli, "SELECT tb_artikel.*,
 
 
 $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
-$about = mysqli_query($mysqli,"SELECT * FROM tb_about");
 // $menu = mysqli_query($mysqli, "SELECT * from tb_menu");
 ?>
 <!doctype html>
@@ -56,7 +55,7 @@ $about = mysqli_query($mysqli,"SELECT * FROM tb_about");
   <meta name="description" content="">
   <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
   <meta name="generator" content="Hugo 0.101.0">
-  <title>Blog Website</title>
+  <title>Artikel Page</title>
 
   <link rel="canonical" href="https://getbootstrap.com/docs/4.6/examples/blog/">
 
@@ -145,7 +144,7 @@ $about = mysqli_query($mysqli,"SELECT * FROM tb_about");
 
     <div class="row mb-2">
       <?php
-      while ($data = mysqli_fetch_array($artikel)) {
+      while ($data = mysqli_fetch_array($new_artikel)) {
       ?>
         <div class="col-md-6">
           <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
@@ -153,16 +152,16 @@ $about = mysqli_query($mysqli,"SELECT * FROM tb_about");
               <strong class="d-inline-block mb-2 text-primary"><?= $data['nama_kategori'] ?></strong>
               <h3 class="mb-0">New post</h3>
               <div class="mb-1 text-muted"><?= date('d-M-Y', strtotime($data['created_time'])) ?></div>
-              <p class="card-text mb-auto text-justify"><?= substr($data['content_artikel'], 0, 100) . '...' ?></p>
-              <a href="#" class="stretched-link">Continue reading</a>
+              <p class="card-text mb-auto text-justify"><?= substr($data['content_artikel'], 0, 30) . '...' ?></p>
+              <a href="artikelDetail.php?id=<?= $data['id']; ?>" class="stretched-link">Continue reading</a>
             </div>
-            <div class="col-auto d-none d-lg-block">
+            <div class="col-auto  d-lg-block">
             <!-- <div class="user-panel d-flex">
                 <div class="image">
                        <img src="./admin/artikel/image/ <?=$data["cover"]; ?>" alt="Gambar" class="img-square elevation-1" style="width: 60px; height: 50px; margin-left: auto; margin-right: auto;">
                                       </div>
                                         </div>     -->
-              <img width="200px"   class="rounded float-right" src="./admin/artikel/image/ <?= $data['cover'] ?>" alt="">
+              <img width="200px"   class="img-thumbnail " src="admin/artikel/image/<?= $data['cover']; ?>" alt="">
             </div>
           </div>
         </div>
@@ -174,23 +173,9 @@ $about = mysqli_query($mysqli,"SELECT * FROM tb_about");
 
     <div class="row">
 
-      <div class="col-md-8 blog-main">
-        <?php
-        while ($dataArtikel = mysqli_fetch_array($new_artikel)) {
-        ?>
-          <h3 class="pb-4 mb-4 font-italic border-bottom">
-            New Update Post
-          </h3>
-
-          <div class="blog-post">
-            <h2 class="blog-post-title">
-              <?= $dataArtikel['judul_artikel'] ?>
-
-            </h2>
-            <p class="blog-post-meta"><?= date('d-M-Y', strtotime($dataArtikel['created_time'])) ?> by <a href="#"><?= $dataArtikel['nama_operator'] ?></a></p>
-            <p class="text-justify"><?= $dataArtikel['content_artikel'] ?></p>
-          </div><!-- /.blog-post -->
-        <?php } ?>
+      <div class="col-12 blog-main">
+       
+          
         <nav class="blog-pagination">
           <ul class="pagination justify-content-center">
             <li class="page-item">
@@ -214,17 +199,7 @@ $about = mysqli_query($mysqli,"SELECT * FROM tb_about");
         </nav>
 
       </div><!-- /.row -->
-      <aside class="col-md-4 blog-sidebar">
-        <div class="p-4 mb-3 bg-light rounded">
-          <h4 class="font-italic">About</h4>
-          <?php while($abt = mysqli_fetch_array($about)): ?>
-          <h5 class="font-italic mt-2"><?= $abt['judul']; ?></h5>
-          <p class="mb-0"><?= $abt['isi']; ?></p>
-          <?php endwhile ?>
-        </div>
-
-
-      </aside><!-- /.blog-sidebar -->
+     
 
   </main><!-- /.container -->
 
