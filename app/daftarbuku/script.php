@@ -3,7 +3,7 @@ require 'function.php';
 if(isset($_POST['category'])){
   $category = $_POST['category'];
   if($category === ""){
-    $products = getAllproducts();
+    $products = getAllproducts($query);
   }else{
     $products = getProductsByCategory($category);
   }

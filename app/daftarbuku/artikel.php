@@ -187,14 +187,14 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
     <div class="row mb-2 product-wrapper">
 
       <?php
-      $products = getAllproducts();
+      $products = getAllproducts($new_artikel);
       foreach($products as $data){
       ?>
 
         <div class="col-md-6 ">
           <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
             <div class="col p-4 d-flex flex-column position-static">
-              <h4 class="heading">judul</h4>
+              
               <strong class="d-inline-block mb-2 text-primary"><?= $data['nama_kategori'] ?></strong>
               <h3 class="mb-0"><?= $data['judul_artikel']; ?></h3>
               <div class="mb-1 text-muted"><?= date('d-M-Y', strtotime($data['created_time'])) ?></div>
