@@ -4,7 +4,8 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 // include("config.php");
-require 'config.php';
+require 'function.php';
+require '../config.php';
 
 $no = 1;
 $allArtikel = mysqli_query($mysqli, "SELECT tb_artikel.*,
@@ -43,8 +44,12 @@ $artikel = mysqli_query($mysqli, "SELECT tb_artikel.*,
                             ");
 
 
+
+
+
 $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
 // $menu = mysqli_query($mysqli, "SELECT * from tb_menu");
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -62,8 +67,8 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
 
 
   <!-- Bootstrap core CSS -->
-  <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">
-
+  <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../blog.css">
 
 
   <style>
@@ -87,6 +92,12 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
         font-size: 3.5rem;
       }
     }
+
+    @media (max-width:720px) {
+    h3{
+      font-size: 1.1rem;
+    }
+}
   </style>
 
 
@@ -124,9 +135,10 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
         <?php
         // while ($data_menu = mysqli_fetch_array($menu)) {
         ?>
-          <!-- <a class="p-2 text-muted" href="#"></a> -->
-          <!-- <?= $data_menu['nama_menu'] ?> -->
-        <?php //} ?>
+        <!-- <a class="p-2 text-muted" href="#"></a> -->
+        <!-- <?= $data_menu['nama_menu'] ?> -->
+        <?php //} 
+        ?>
       </nav>
     </div>
 
@@ -142,30 +154,69 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
       </div>
     </div>
 
-    <div class="row mb-2">
+
+
+
+
+    <div class="container  mb-4 border-bottom ">
+      <div class="row d-flex align-items-center">
+        <div class="col-lg-6 col-6">
+          <h3 class="-italic ">
+            New Update Post
+          </h3>
+        </div>
+        <div class="col-lg-3 col-3">
+          <h3 class="text-kategori">filter by category</h3>
+        </div>
+        <div class="col-lg-3 col-3">
+          <div class="form-group mt-3">
+            <select class="form-control" id="products" name="products">
+              <option value="">semua Kategori</option>
+              <?php while($data = mysqli_fetch_array($kategori)): ?>
+                <option value="<?= $data['id']; ?>"><?= $data['nama_kategori']; ?></option>
+                <?php endwhile ?>
+                
+               
+            </select>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="row mb-2 product-wrapper">
+
       <?php
-      while ($data = mysqli_fetch_array($new_artikel)) {
+      $products = getAllproducts();
+      foreach($products as $data){
       ?>
-        <div class="col-md-6">
+
+        <div class="col-md-6 ">
           <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
             <div class="col p-4 d-flex flex-column position-static">
+              <h4 class="heading">judul</h4>
               <strong class="d-inline-block mb-2 text-primary"><?= $data['nama_kategori'] ?></strong>
-              <h3 class="mb-0">New post</h3>
+              <h3 class="mb-0"><?= $data['judul_artikel']; ?></h3>
               <div class="mb-1 text-muted"><?= date('d-M-Y', strtotime($data['created_time'])) ?></div>
               <p class="card-text mb-auto text-justify"><?= substr($data['content_artikel'], 0, 30) . '...' ?></p>
               <a href="artikelDetail.php?id=<?= $data['id']; ?>" class="stretched-link">Continue reading</a>
             </div>
             <div class="col-auto  d-lg-block">
-            <!-- <div class="user-panel d-flex">
+              <!-- <div class="user-panel d-flex">
                 <div class="image">
-                       <img src="./admin/artikel/image/ <?=$data["cover"]; ?>" alt="Gambar" class="img-square elevation-1" style="width: 60px; height: 50px; margin-left: auto; margin-right: auto;">
+                       <img src="./admin/artikel/image/ <?= $data["cover"]; ?>" alt="Gambar" class="img-square elevation-1" style="width: 60px; height: 50px; margin-left: auto; margin-right: auto;">
                                       </div>
                                         </div>     -->
-              <img width="200px"   class="img-thumbnail " src="admin/artikel/image/<?= $data['cover']; ?>" alt="">
+              <img width="200px" class="img-thumbnail " src="../admin/artikel/image/<?= $data['cover']; ?>" alt="">
             </div>
           </div>
         </div>
       <?php } ?>
+      <!-- filter data -->
+     
+
+      <!-- end filter data -->
+
     </div>
   </div>
 
@@ -174,8 +225,8 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
     <div class="row">
 
       <div class="col-12 blog-main">
-       
-          
+
+
         <nav class="blog-pagination">
           <ul class="pagination justify-content-center">
             <li class="page-item">
@@ -199,7 +250,7 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
         </nav>
 
       </div><!-- /.row -->
-     
+
 
   </main><!-- /.container -->
 
@@ -209,9 +260,12 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
       <a href="#">Back to top</a>
     </p>
   </footer>
-
-
-
+  <script src="script.js"></script>
+  <script src="bootstrap-4.6.2-examples/assets/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/src/dropdown.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
 </body>
 
 </html>

@@ -4,7 +4,7 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 // include("config.php");
-require 'config.php';
+require '../config.php';
 
 
 $id = $_GET['id'];
@@ -40,7 +40,7 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel WHERE id='$id'
 
 
   <!-- Bootstrap core CSS -->
-  <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
 
 
@@ -71,7 +71,7 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel WHERE id='$id'
   <!-- Custom styles for this template -->
   <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900" rel="stylesheet">
   <!-- Custom styles for this template -->
-  <link href="blog.css" rel="stylesheet">
+  <link href="../blog.css" rel="stylesheet">
 </head>
 
 <body>
@@ -109,7 +109,7 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel WHERE id='$id'
           </div>
             <div class="col-12 mt-3">
               <div class="img-container ">
-              <img src="admin/artikel/image/<?= $art['cover']; ?>" class="img-fluid rounded mx-auto d-block" alt="...">
+              <img src="../admin/artikel/image/<?= $art['cover']; ?>" class="img-fluid rounded mx-auto d-block" alt="...">
               </div>
             </div>
             <div class="col-12">
