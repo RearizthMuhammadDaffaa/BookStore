@@ -232,11 +232,12 @@ $menu = mysqli_query($mysqli, "SELECT * from tb_menu");
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-2 col-6">
+          <h2>social</h2>
           <ul class="">
            <?php $social = mysqli_query($mysqli,"SELECT * FROM tb_social");
             while($data = mysqli_fetch_array($social)):
            ?>
-            <li class=" lg-mt-2 mt-3 mx-3 d-flex lg-justify-content-between align-items-center"><img src="admin/social/image/<?= $data['icon']; ?>" class="img-thumbnail rounded-circle" width="50px" height="50px" alt="..."> <?= $data['nama_sosmed']; ?></li>
+            <li class=" lg-mt-2 mt-3 d-flex justify-content-lg-around align-items-center"><img src="admin/social/image/<?= $data['icon']; ?>" class="rounded-circle " width="40px" height="40px" alt="..."> <?= $data['nama_sosmed']; ?></li>
           
            <?php endwhile ?>
            </ul>

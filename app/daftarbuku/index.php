@@ -134,6 +134,15 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
         </p>
         <a href="https://bootstrapious.com/snippets" class="btn btn-primary">Find More</a>
       </div>
+      <form action="" method="post">
+        <div class="input-group mb-3">
+          <input type="text" id="keywoard" class="form-control" placeholder="search" aria-label="Recipient's username" >
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" id="btn-cari">Cari</button>
+          </div>
+        </div>
+      </form>
+
     </div>
 
 
@@ -166,29 +175,30 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
 
 
     </div>
-    <div class="row mb-2 product-wrapper">
+    <div class="row mb-2 product-wrapper" id="product-wrapper">
+      
+        <?php
 
-      <?php
+        while ($data = mysqli_fetch_array($allArtikel)) {
+        ?>
 
-      while ($data = mysqli_fetch_array($allArtikel)) {
-      ?>
+          <div class="col-md-4 ">
+            <div class="card mx-auto mt-2" style="width: 18rem;">
+              <img src="../admin/buku/image/<?= $data['gambar']; ?>" class="card-img-top img-fluid" alt="...">
+              <div class="card-body text-center">
+                <h5 class="card-title"><?= $data['judul_buku']; ?></h5>
+                <p class="card-text">deskripsi : <?= $data['deskripsi']; ?></p>
+                <p class="card-text">harga : <?= number_format($data['harga']); ?></p>
+                <div class="d-flex justify-content-center  flex-column">
+                  <a href="detail.php?id_buku=<?= $data['id']; ?>" class="btn btn-primary">Detail</a>
+                  <button type="submit" class="btn btn-success mt-2 ">ADD to chart</button>
+                </div>
 
-        <div class="col-md-4 ">
-          <div class="card mx-auto mt-2" style="width: 18rem;">
-            <img src="../admin/buku/image/<?= $data['gambar']; ?>" class="card-img-top img-fluid"  alt="...">
-            <div class="card-body text-center">
-              <h5 class="card-title"><?= $data['judul_buku']; ?></h5>
-              <p class="card-text">deskripsi : <?= $data['deskripsi']; ?></p>
-              <p class="card-text">harga : <?= number_format($data['harga']); ?></p>
-              <div class="d-flex justify-content-center  flex-column">
-              <a href="detail.php?id_buku=<?= $data['id']; ?>" class="btn btn-primary">Detail</a>
-              <button type="submit" class="btn btn-success mt-2 ">ADD to chart</button>
               </div>
-             
             </div>
           </div>
-        </div>
-      <?php } ?>
+        <?php } ?>
+      
       <!-- filter data -->
 
 
@@ -238,12 +248,8 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
       <a href="#">Back to top</a>
     </p>
   </footer>
-  <script src="script.js"></script>
-  <script src="bootstrap-4.6.2-examples/assets/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/js/src/dropdown.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+  <script src="cari.js"></script>
+
 </body>
 
 </html>
