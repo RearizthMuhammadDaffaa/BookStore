@@ -13,11 +13,12 @@ $allArtikel = mysqli_query($mysqli, "SELECT tb_artikel.*,
                             tb_admin.nama_operator
                             FROM tb_artikel
                             INNER JOIN kategori_artikel ON tb_artikel.id_kategori = kategori_artikel.id
-                            INNER JOIN tb_admin ON tb_artikel.user_id = tb_admin.id
+                            INNER JOIN tb_admin ON tb_artikel.user_id = tb_admin.id 
                             ORDER BY id DESC
                             ");
 $batas = 8;
 $halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
+
 $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
 
 $previous = $halaman - 1;
@@ -33,19 +34,6 @@ $new_artikel = mysqli_query($mysqli, "SELECT tb_artikel.*,
                             INNER JOIN tb_admin ON tb_artikel.user_id = tb_admin.id ORDER BY id DESC
                             LIMIT $halaman_awal, $batas
                            ");
-$artikel = mysqli_query($mysqli, "SELECT tb_artikel.*,
-                            kategori_artikel.nama_kategori,
-                            tb_admin.nama_operator
-                            FROM tb_artikel
-                            INNER JOIN kategori_artikel ON tb_artikel.id_kategori = kategori_artikel.id
-                            INNER JOIN tb_admin ON tb_artikel.user_id = tb_admin.id
-                            ORDER BY id DESC
-                            limit 4
-                            ");
-
-
-
-
 
 $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
 // $menu = mysqli_query($mysqli, "SELECT * from tb_menu");
@@ -235,6 +223,7 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
                                     } ?>>Sebelumnya</a>
             </li>
             <?php
+           
             for ($x = 1; $x <= $total_halaman; $x++) {
             ?>
               <li class="page-item"><a class="page-link" href="?halaman=<?= $x ?>"><?= $x; ?></a></li>
@@ -242,7 +231,7 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
             }
             ?>
             <li class="page-item">
-              <a class="page-link" <?php if ($halaman < $total_halaman) {
+              <a class="page-link" <?php  if ($halaman < $total_halaman) {
                                       echo "href='?halaman=$next'";
                                     } ?>>Selanjutnya</a>
             </li>

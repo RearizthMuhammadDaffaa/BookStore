@@ -9,4 +9,6 @@ if(isset($_POST['category'])){
   }
   echo json_encode($products);
 }
+
+
 ?>

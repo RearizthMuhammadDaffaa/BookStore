@@ -47,6 +47,8 @@ function getAllproducts()
   return $products;
 }
 
+
+
 function getProductsByCategory($category)
 {
   $mysqli = connect();

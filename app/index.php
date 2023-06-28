@@ -44,8 +44,8 @@ $artikel = mysqli_query($mysqli, "SELECT tb_artikel.*,
 
 
 $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
-$about = mysqli_query($mysqli,"SELECT * FROM tb_about");
-// $menu = mysqli_query($mysqli, "SELECT * from tb_menu");
+$about = mysqli_query($mysqli, "SELECT * FROM tb_about");
+$menu = mysqli_query($mysqli, "SELECT * from tb_menu");
 ?>
 <!doctype html>
 <html lang="en">
@@ -123,11 +123,11 @@ $about = mysqli_query($mysqli,"SELECT * FROM tb_about");
     <div class="nav-scroller py-1 mb-2">
       <nav class="nav d-flex justify-content-between">
         <?php
-        // while ($data_menu = mysqli_fetch_array($menu)) {
+        while ($data_menu = mysqli_fetch_array($menu)) {
         ?>
-          <!-- <a class="p-2 text-muted" href="#"></a> -->
-          <!-- <?= $data_menu['nama_menu'] ?> -->
-        <?php //} ?>
+          <a class="p-2 text-muted" href="<?= $data['nama_menu']; ?>/index.php"> <?= $data_menu['nama_menu'] ?></a>
+
+        <?php } ?>
       </nav>
     </div>
 
@@ -157,12 +157,12 @@ $about = mysqli_query($mysqli,"SELECT * FROM tb_about");
               <a href="#" class="stretched-link">Continue reading</a>
             </div>
             <div class="col-auto d-none d-lg-block">
-            <!-- <div class="user-panel d-flex">
+              <!-- <div class="user-panel d-flex">
                 <div class="image">
-                       <img src="./admin/artikel/image/ <?=$data["cover"]; ?>" alt="Gambar" class="img-square elevation-1" style="width: 60px; height: 50px; margin-left: auto; margin-right: auto;">
+                       <img src="./admin/artikel/image/ <?= $data["cover"]; ?>" alt="Gambar" class="img-square elevation-1" style="width: 60px; height: 50px; margin-left: auto; margin-right: auto;">
                                       </div>
                                         </div>     -->
-              <img width="200px"   class="rounded float-right" src="./admin/artikel/image/ <?= $data['cover'] ?>" alt="">
+              <img width="200px" class="rounded float-right" src="./admin/artikel/image/ <?= $data['cover'] ?>" alt="">
             </div>
           </div>
         </div>
@@ -217,9 +217,9 @@ $about = mysqli_query($mysqli,"SELECT * FROM tb_about");
       <aside class="col-md-4 blog-sidebar">
         <div class="p-4 mb-3 bg-light rounded">
           <h4 class="font-italic">About</h4>
-          <?php while($abt = mysqli_fetch_array($about)): ?>
-          <h5 class="font-italic mt-2"><?= $abt['judul']; ?></h5>
-          <p class="mb-0"><?= $abt['isi']; ?></p>
+          <?php while ($abt = mysqli_fetch_array($about)) : ?>
+            <h5 class="font-italic mt-2"><?= $abt['judul']; ?></h5>
+            <p class="mb-0"><?= $abt['isi']; ?></p>
           <?php endwhile ?>
         </div>
 
@@ -229,10 +229,29 @@ $about = mysqli_query($mysqli,"SELECT * FROM tb_about");
   </main><!-- /.container -->
 
   <footer class="blog-footer">
-    <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-    <p>
-      <a href="#">Back to top</a>
-    </p>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-2 col-6">
+          <ul class="">
+           <?php $social = mysqli_query($mysqli,"SELECT * FROM tb_social");
+            while($data = mysqli_fetch_array($social)):
+           ?>
+            <li class=" lg-mt-2 mt-3 mx-3 d-flex lg-justify-content-between align-items-center"><img src="admin/social/image/<?= $data['icon']; ?>" class="img-thumbnail rounded-circle" width="50px" height="50px" alt="..."> <?= $data['nama_sosmed']; ?></li>
+          
+           <?php endwhile ?>
+           </ul>
+        </div>
+        <div class="col-lg-8 col-6 d-flex align-items-center justify-content-center flex-wrap">
+          <p class="text-break">Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.  <a href="#" class="text-break">Back to top</a></p>
+          <p>
+         
+          </p>
+        </div>
+        <div class="col-lg-2"></div>
+      </div>
+    </div>
+
+
   </footer>
 
 

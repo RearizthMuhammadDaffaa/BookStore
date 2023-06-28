@@ -21,8 +21,14 @@
                     case 'kategori_artikel':
                         include "kategori_artikel/index.php";
                         break;
+                    case 'header':
+                        include "header/index.php";
+                        break;
                     case 'about':
                         include "about/index.php";
+                        break;
+                    case 'social':
+                        include "social/index.php";
                         break;
                     case 'menu':
                         include "menu/index.php";
