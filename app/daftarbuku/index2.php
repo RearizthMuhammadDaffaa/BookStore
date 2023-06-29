@@ -8,12 +8,13 @@ error_reporting(E_ALL);
 require '../config.php';
 
 $no = 1;
+$kategori_id = $_GET['kategori_id'];
 $allArtikel = mysqli_query($mysqli, "SELECT data_buku.*, kategori.nama_kategori
 FROM data_buku
-INNER JOIN kategori ON data_buku.id_kategori = kategori.id
+INNER JOIN kategori ON data_buku.id_kategori = kategori.id WHERE kategori.id = '$kategori_id'
 ORDER BY id DESC
  ");
-$batas = 8;
+$batas = 5;
 $halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
 
 $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
@@ -25,7 +26,7 @@ $total_halaman = ceil($jumlah_data / $batas);
 
 $new_artikel = mysqli_query($mysqli, "SELECT data_buku.*, kategori.nama_kategori
 FROM data_buku
-INNER JOIN kategori ON data_buku.id_kategori = kategori.id
+INNER JOIN kategori ON data_buku.id_kategori = kategori.id WHERE kategori.id = '$kategori_id'
 ORDER BY id DESC LIMIT $halaman_awal, $batas
                            ");
 
@@ -160,107 +161,112 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori");
           <h3 class="text-kategori">filter by category</h3>
         </div>
         <div class="col-lg-3 col-3">
-          <div class="btn-group mb-2">
-            <button class="btn  btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-              pilih kategori
+          <div class="btn-group">
+            <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+              Large button
             </button>
             <div class="dropdown-menu">
-            
-                  <ul>
-                    <li><a href="index.php">Semua kategori</a></li>
-                  <?php while ($data = mysqli_fetch_array($kategori)) : ?>
-                    <li><a href="index2.php?kategori_id=<?= $data['id']; ?>"> <?= $data['nama_kategori']; ?></a></li>
-                    <?php endwhile ?>
-                  </ul>
-                    
-                   
-                 
-              
-            </div>
+
+              <ul>
+                <li><a href="index.php">Semua kategori</a></li>
+                <?php while ($data = mysqli_fetch_array($kategori)) : ?>
+                  <li><a href="index2.php?kategori_id=<?= $data['id']; ?>"> <?= $data['nama_kategori']; ?></a></li>
+                <?php endwhile ?>
+              </ul>
+
+
+
+
             </div>
           </div>
         </div>
-
-
       </div>
-      <h3 class="text-center">semua kategori</h3>
-      <div class="row mb-2 product-wrapper" id="product-wrapper">
-                   
-        <?php
 
-        while ($data = mysqli_fetch_array($new_artikel)) {
-        ?>
 
-          <div class="col-md-4 ">
-            <div class="card mx-auto mt-2" style="width: 18rem;">
-              <img src="../admin/buku/image/<?= $data['gambar']; ?>" class="card-img-top img-fluid" alt="...">
-              <div class="card-body text-center">
-                <h5 class="card-title"><?= $data['judul_buku']; ?></h5>
-                <p class="card-text">deskripsi : <?= $data['deskripsi']; ?></p>
-                <p class="card-text">harga : <?= number_format($data['harga']); ?></p>
-                <div class="d-flex justify-content-center  flex-column">
-                  <a href="detail.php?id_buku=<?= $data['id']; ?>" class="btn btn-primary">Detail</a>
-                  <button type="submit" class="btn btn-success mt-2 ">ADD to chart</button>
-                </div>
+    </div>
+    <div class="row mb-2 product-wrapper" id="product-wrapper">
 
+      <?php
+      $kategori_id = $_GET['kategori_id'];
+      $buku = mysqli_query($mysqli, "SELECT data_buku.*, kategori.nama_kategori
+          FROM data_buku
+          INNER JOIN kategori ON data_buku.id_kategori = kategori.id WHERE kategori.id = '$kategori_id'
+          ORDER BY id DESC LIMIT $halaman_awal, $batas
+           ");
+      while ($data = mysqli_fetch_array($new_artikel)) {
+      ?>
+
+        <div class="col-md-4 ">
+          <div class="card mx-auto mt-2" style="width: 18rem;">
+            <img src="../admin/buku/image/<?= $data['gambar']; ?>" class="card-img-top img-fluid" alt="...">
+            <div class="card-body text-center">
+              <h5 class="card-title"><?= $data['judul_buku']; ?></h5>
+              <p class="card-text">deskripsi : <?= $data['deskripsi']; ?></p>
+              <p class="card-text">harga : <?= number_format($data['harga']); ?></p>
+              <div class="d-flex justify-content-center  flex-column">
+                <a href="detail.php?id_buku=<?= $data['id']; ?>" class="btn btn-primary">Detail</a>
+                <button type="submit" class="btn btn-success mt-2 ">ADD to chart</button>
               </div>
+
             </div>
           </div>
-        <?php } ?>
+        </div>
+      <?php } ?>
 
-        <!-- filter data -->
+      <!-- filter data -->
 
 
-        <!-- end filter data -->
+      <!-- end filter data -->
 
-      </div>
     </div>
+  </div>
 
-    <main role="main" class="container">
+  <main role="main" class="container">
 
-      <div class="row">
+    <div class="row">
 
-        <div class="col-12 blog-main">
-
-
-          <nav class="blog-pagination">
-            <ul class="pagination justify-content-center">
-              <li class="page-item">
-                <a class="page-link" <?php if ($halaman > 1) {
-                                        echo "href='?halaman=$previous'";
-                                      } ?>>Sebelumnya</a>
-              </li>
-              <?php
-
-              for ($x = 1; $x <= $total_halaman; $x++) {
-              ?>
-                <li class="page-item"><a class="page-link" href="?halaman=<?= $x ?>"><?= $x; ?></a></li>
-              <?php
-              }
-              ?>
-              <li class="page-item">
-                <a class="page-link" <?php if ($halaman < $total_halaman) {
-                                        echo "href='?halaman=$next'";
-                                      } ?>>Selanjutnya</a>
-              </li>
-            </ul>
-          </nav>
-
-        </div><!-- /.row -->
+      <div class="col-12 blog-main">
 
 
-    </main><!-- /.container -->
+        <nav class="blog-pagination">
+          <ul class="pagination justify-content-center">
+            <li class="page-item">
+              <a class="page-link" <?php if ($halaman > 1) {
+                                      echo "href='?halaman=$previous'";
+                                    } ?>>Sebelumnya</a>
+            </li>
+            <?php
 
-    <footer class="blog-footer">
-      <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-      <p>
-        <a href="#">Back to top</a>
-      </p>
-    </footer>
-    <script src="cari.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+            for ($x = 1; $x <= $total_halaman; $x++) {
+            ?>
+              <li class="page-item"><a class="page-link" href="?halaman=<?= $x ?>&kategori_id=<?= $kategori_id; ?>"><?= $x; ?></a></li>
+            <?php
+            }
+            ?>
+            <li class="page-item">
+              <a class="page-link" <?php if ($halaman < $total_halaman) {
+                                      echo "href='?halaman=$next'";
+                                    } ?>>Selanjutnya</a>
+            </li>
+          </ul>
+        </nav>
+
+      </div><!-- /.row -->
+
+
+  </main><!-- /.container -->
+
+  <footer class="blog-footer">
+    <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+    <p>
+      <a href="#">Back to top</a>
+    </p>
+  </footer>
+  <script src="cari.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+
 
 
 </body>

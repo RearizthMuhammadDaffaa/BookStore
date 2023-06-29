@@ -1,10 +1,12 @@
-<?php 
+<?php
 require 'function.php';
-if(isset($_POST['category'])){
+require '../config.php';
+
+if (isset($_POST['category'])) {
   $category = $_POST['category'];
-  if($category === ""){
-    $products = getAllproducts($query);
-  }else{
+  if ($category === '') {
+    $products = getAllproducts();
+  } else {
     $products = getProductsByCategory($category);
   }
   echo json_encode($products);
@@ -12,3 +14,7 @@ if(isset($_POST['category'])){
 
 
 ?>
+
+
+
+

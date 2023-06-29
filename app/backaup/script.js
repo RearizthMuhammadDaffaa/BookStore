@@ -1,5 +1,8 @@
 let selectmenu = document.querySelector('#products');
 let container = document.querySelector('.product-wrapper');
+var keywoard = document.querySelector('#cari');
+var tombolCari = document.querySelector('#btn-cari');
+var wrapper = document.querySelector('#container');
 
 selectmenu.addEventListener("change",function(){
     let categoryName = this.value;
@@ -10,7 +13,8 @@ selectmenu.addEventListener("change",function(){
     http.onload = function(){
       if(this.readyState == 4 && this.status == 200){
         let response = JSON.parse(this.responseText);
-        let out = ``;
+        
+        let out = "";
         for(let item of response){
           let createdTime = new Date(item.created_time);
           let formattedDate = createdTime.getDate() + '-' + (createdTime.getMonth() + 1) + '-' + createdTime.getFullYear();
@@ -42,3 +46,26 @@ selectmenu.addEventListener("change",function(){
     http.setRequestHeader("content-type","application/x-www-form-urlencoded");
     http.send('category=' + categoryName);
 })
+
+
+
+
+
+keywoard.addEventListener('keyup', function() {
+  
+  alert(keywoard.value)
+  //buat object ajax
+  var xhr = new XMLHttpRequest();
+  //cek kesiapan ajax
+  xhr.onreadystatechange = function(){
+    if(xhr.readyState == 4 && xhr.status == 200){
+      wrapper.innerHTML = xhr.responseText;
+    }
+  }
+  
+  xhr.open('GET','cariArtikel.php?keywoard=' + keywoard.value,true)
+  xhr.send()
+
+
+
+});

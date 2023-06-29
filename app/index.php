@@ -46,6 +46,7 @@ $artikel = mysqli_query($mysqli, "SELECT tb_artikel.*,
 $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
 $about = mysqli_query($mysqli, "SELECT * FROM tb_about");
 $menu = mysqli_query($mysqli, "SELECT * from tb_menu");
+$header = mysqli_query($mysqli, "SELECT * from tb_slider");
 ?>
 <!doctype html>
 <html lang="en">
@@ -87,6 +88,10 @@ $menu = mysqli_query($mysqli, "SELECT * from tb_menu");
       .bd-placeholder-img-lg {
         font-size: 3.5rem;
       }
+    }
+
+    .borderless{
+      border: none !important;
     }
   </style>
 
@@ -132,14 +137,56 @@ $menu = mysqli_query($mysqli, "SELECT * from tb_menu");
     </div>
 
     <div class="container py-5">
-      <div class="jumbotron text-white jumbotron-image shadow" style="background-image: url(https://diperpa.badungkab.go.id/storage/olds/diperpa/Cara-Budidaya-Buah-Naga_649711.jpg);">
-        <h2 class="mb-4">
-          Join For The Best Experience
-        </h2>
-        <p class="mb-4">
-          Hey, check this out.
-        </p>
-        <a href="https://bootstrapious.com/snippets" class="btn btn-primary">Find More</a>
+      <div class="row">
+        <div class="col-lg-12 mx-auto">
+          <div id="demo" class="carousel slide" data-ride="carousel">
+
+            <!-- Indicators -->
+            <ul class="carousel-indicators">
+              <?php
+              $i = 0;
+              foreach ($header as $row) {
+                $actives = '';
+                if ($i == 0) {
+                  $actives = 'active';
+                }
+
+
+              ?>
+                <li data-target="#demo" data-slide-to="<?= $i; ?>" class="active"></li>
+              <?php $i++;
+              } ?>
+            </ul>
+
+            <!-- The slideshow -->
+            <div class="carousel-inner">
+              <?php
+              $i = 0;
+              foreach ($header as $row) {
+                $actives = '';
+                if ($i == 0) {
+                  $actives = 'active';
+                }
+
+
+              ?>
+                <div class="carousel-item <?= $actives; ?>">
+                  <img src="admin/header/image/<?= $row['gambar']; ?>" alt="Los Angeles" width="100%" height="300">
+                </div>
+              <?php $i++;
+              } ?>
+            </div>
+
+            <!-- Left and right controls -->
+            <a class="carousel-control-prev" href="#demo" data-slide="prev">
+              <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#demo" data-slide="next">
+              <span class="carousel-control-next-icon"></span>
+            </a>
+
+          </div>
+        </div>
       </div>
     </div>
 
@@ -232,20 +279,31 @@ $menu = mysqli_query($mysqli, "SELECT * from tb_menu");
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-2 col-6">
-          <h2>social</h2>
-          <ul class="">
-           <?php $social = mysqli_query($mysqli,"SELECT * FROM tb_social");
-            while($data = mysqli_fetch_array($social)):
-           ?>
-            <li class=" lg-mt-2 mt-3 d-flex justify-content-lg-around align-items-center"><img src="admin/social/image/<?= $data['icon']; ?>" class="rounded-circle " width="40px" height="40px" alt="..."> <?= $data['nama_sosmed']; ?></li>
-          
-           <?php endwhile ?>
-           </ul>
+        <h2>social</h2>
+          <table class="table table-borderless mt-2">
+            <tr class="">
+            <?php $social = mysqli_query($mysqli, "SELECT * FROM tb_social");
+            while ($data = mysqli_fetch_array($social)) :
+            ?>
+              <td><img src="admin/social/image/<?= $data['icon']; ?>" alt="" class="rounded-circle" width="40px" height="40"></td>
+              <td class="ml-4"><?= $data['nama_sosmed']; ?></td>
+            </tr>
+            <?php endwhile ?>
+          </table>
+         
+          <!-- <ul class="">
+            <?php $social = mysqli_query($mysqli, "SELECT * FROM tb_social");
+            while ($data = mysqli_fetch_array($social)) :
+            ?>
+              <li class=" lg-mt-2 mt-3 d-flex justify-content-lg-around align-items-center"><img src="admin/social/image/<?= $data['icon']; ?>" class="rounded-circle " width="40px" height="40px" alt="..."> <?= $data['nama_sosmed']; ?></li>
+
+            <?php endwhile ?>
+          </ul> -->
         </div>
         <div class="col-lg-8 col-6 d-flex align-items-center justify-content-center flex-wrap">
-          <p class="text-break">Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.  <a href="#" class="text-break">Back to top</a></p>
+          <p class="text-break">Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>. <a href="#" class="text-break">Back to top</a></p>
           <p>
-         
+
           </p>
         </div>
         <div class="col-lg-2"></div>
@@ -255,7 +313,9 @@ $menu = mysqli_query($mysqli, "SELECT * from tb_menu");
 
   </footer>
 
-
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
 
 </body>
 
