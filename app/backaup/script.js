@@ -1,8 +1,5 @@
 let selectmenu = document.querySelector('#products');
 let container = document.querySelector('.product-wrapper');
-var keywoard = document.querySelector('#cari');
-var tombolCari = document.querySelector('#btn-cari');
-var wrapper = document.querySelector('#container');
 
 selectmenu.addEventListener("change",function(){
     let categoryName = this.value;
@@ -51,21 +48,4 @@ selectmenu.addEventListener("change",function(){
 
 
 
-keywoard.addEventListener('keyup', function() {
-  
-  alert(keywoard.value)
-  //buat object ajax
-  var xhr = new XMLHttpRequest();
-  //cek kesiapan ajax
-  xhr.onreadystatechange = function(){
-    if(xhr.readyState == 4 && xhr.status == 200){
-      wrapper.innerHTML = xhr.responseText;
-    }
-  }
-  
-  xhr.open('GET','cariArtikel.php?keywoard=' + keywoard.value,true)
-  xhr.send()
 
-
-
-});

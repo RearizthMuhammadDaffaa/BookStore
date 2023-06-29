@@ -15,6 +15,9 @@
                     case 'buku':
                         include "buku/content-header.php";
                         break;
+                    case 'gallery':
+                        include "buku/content-header.php";
+                        break;
                     case 'kategori_buku':
                         include "kategori_buku/content-header.php";
                         break;

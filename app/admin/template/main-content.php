@@ -14,7 +14,9 @@
                     case 'buku':
                         include "buku/index.php";
                         break;
-
+                    case 'gallery':
+                        include "gallery/index.php";
+                        break;
                     case 'kategori_buku':
                         include "kategori_buku/index.php";
                         break;
