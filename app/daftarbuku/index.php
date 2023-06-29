@@ -4,8 +4,33 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 // include("config.php");
-
+session_start();
 require '../config.php';
+
+if(!isset($_SESSION['username'])){
+  header('Location: admin/login.php');
+  exit;
+}
+
+$user_id = $_SESSION['id'];
+
+
+if(isset($_POST['add_cart'])){
+  $judul_buku = $_POST['judul_buku'];
+ 
+  $gambar_buku = $_POST['gambar_buku'];
+  $id_buku = $_POST['id_buku'];
+  mysqli_query($mysqli, "INSERT INTO cart(user_id,judul_buku,gambar,quantity,id_buku) VALUES('$user_id','$judul_buku','$gambar_buku',1,$id_buku)") or die('query failed');
+  $select = mysqli_query($mysqli,"SELECT * FROM cart WHERE judul_buku = $judul_buku AND user_id = $user_id");
+  if (mysqli_num_rows($select) > 0) {
+    
+  } else {
+  
+  
+  }
+  
+}
+
 
 $no = 1;
 $allArtikel = mysqli_query($mysqli, "SELECT data_buku.*, kategori.nama_kategori
@@ -192,7 +217,9 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori");
         ?>
 
           <div class="col-md-4 ">
+           
             <div class="card mx-auto mt-2" style="width: 18rem;">
+            <form action="" method="post">
               <img src="../admin/buku/image/<?= $data['gambar']; ?>" class="card-img-top img-fluid" alt="...">
               <div class="card-body text-center">
                 <h5 class="card-title"><?= $data['judul_buku']; ?></h5>
@@ -200,11 +227,18 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori");
                 <p class="card-text">harga : <?= number_format($data['harga']); ?></p>
                 <div class="d-flex justify-content-center  flex-column">
                   <a href="detail.php?id_buku=<?= $data['id']; ?>" class="btn btn-primary">Detail</a>
-                  <button type="submit" class="btn btn-success mt-2 ">ADD to chart</button>
+                  <button type="submit" class="btn btn-success mt-2 " name="add_cart">ADD to chart</button>
                 </div>
 
               </div>
             </div>
+            
+              <input type="hidden" name="judul_buku" value="<?= $data['judul_buku']; ?>">
+              <input type="hidden" name="harga" value = " <?= $data['harga']; ?>">
+              <input type="hidden" name="gambar_buku" value="<?= $data['gambar']; ?>">
+              <input type="hidden" name="id_buku" value="<?= $data['id']; ?>">
+             
+            </form>
           </div>
         <?php } ?>
 

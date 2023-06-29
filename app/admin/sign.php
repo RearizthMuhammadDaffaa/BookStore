@@ -4,6 +4,7 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 $base_url_admin = "http://localhost/BOOKSTORE/app/admin";
+$base_url = "http://localhost/BOOKSTORE/app";
 
 if (isset($_SESSION['username'])) {
     header("Location: ../admin/dashboard.php?page=home");
@@ -79,7 +80,7 @@ if (isset($_POST['submit'])) {
                             <button type="submit" name="submit" class="btn btn-primary btn-block">Sign In</button>
                         </div>
                         <div class="col-6 text-center mt-1" >
-                           <a href="<?= $base_url_admin; ?>/sign_user.php">Login sebagai User</a>
+                           <a href="<?= $base_url_admin; ?>/login.php">Login sebagai User</a>
                         </div>
                         <!-- /.col -->
                     </div>

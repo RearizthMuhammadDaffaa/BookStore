@@ -4,9 +4,12 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 // include("config.php");
-
+session_start();
 require '../config.php';
-
+if(!isset($_SESSION['username'])){
+  header('Location: admin/login.php');
+  exit;
+}
 $no = 1;
 $idkategori = $_GET['kategori'];
 

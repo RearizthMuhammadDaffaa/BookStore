@@ -3,8 +3,21 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
+session_start();
+
+
 // include("config.php");
 require 'config.php';
+
+if(!isset($_SESSION['username'])){
+  echo "
+  <script>alert('login terlebih dahulu')</script>
+  ";
+  header('Location: admin/login.php');
+ 
+  exit;
+}
+
 
 $no = 1;
 $allArtikel = mysqli_query($mysqli, "SELECT tb_artikel.*,
@@ -90,7 +103,7 @@ $header = mysqli_query($mysqli, "SELECT * from tb_slider");
       }
     }
 
-    .borderless{
+    .borderless {
       border: none !important;
     }
   </style>
@@ -111,15 +124,26 @@ $header = mysqli_query($mysqli, "SELECT * from tb_slider");
           <a class="text-muted" href="#"></a>
         </div>
         <div class="col-4 text-center">
-          <a class="blog-header-logo text-dark" href="#">Farmer</a>
+          <a class="blog-header-logo text-dark" href="#">Book Store</a>
         </div>
         <div class="col-4 d-flex justify-content-end align-items-center">
+          <div class="dropdown mx-4">
+            <a class=" dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+             <img src="uploads/no-photo.jpg"  class="img-fluid rounded-circle" height="30" width="30" alt="">
+             <span><?= $_SESSION['username']; ?></span>
+            </a>
+
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">Edit Profile</a>
+              <a class="dropdown-item" href="#">Isi saldo</a>
+              <a class="dropdown-item" href="logout.php">Logout</a>
+            </div>
+          </div>
           <a class="text-muted" href="#" aria-label="Search">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24" focusable="false">
-              <title>Search</title>
-              <circle cx="10.5" cy="10.5" r="7.5" />
-              <path d="M21 21l-5.2-5.2" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+              <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
             </svg>
+            <span>0</span>
           </a>
         </div>
       </div>
@@ -279,18 +303,18 @@ $header = mysqli_query($mysqli, "SELECT * from tb_slider");
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-2 col-6">
-        <h2>social</h2>
+          <h2>social</h2>
           <table class="table table-borderless mt-2">
             <tr class="">
-            <?php $social = mysqli_query($mysqli, "SELECT * FROM tb_social");
-            while ($data = mysqli_fetch_array($social)) :
-            ?>
-              <td><img src="admin/social/image/<?= $data['icon']; ?>" alt="" class="rounded-circle" width="40px" height="40"></td>
-              <td class="ml-4"><?= $data['nama_sosmed']; ?></td>
+              <?php $social = mysqli_query($mysqli, "SELECT * FROM tb_social");
+              while ($data = mysqli_fetch_array($social)) :
+              ?>
+                <td><img src="admin/social/image/<?= $data['icon']; ?>" alt="" class="rounded-circle" width="40px" height="40"></td>
+                <td class="ml-4"><?= $data['nama_sosmed']; ?></td>
             </tr>
-            <?php endwhile ?>
+          <?php endwhile ?>
           </table>
-         
+
           <!-- <ul class="">
             <?php $social = mysqli_query($mysqli, "SELECT * FROM tb_social");
             while ($data = mysqli_fetch_array($social)) :

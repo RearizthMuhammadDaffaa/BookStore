@@ -4,9 +4,10 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 $base_url_admin = "http://localhost/BOOKSTORE/app/admin";
+$base_url = "http://localhost/BOOKSTORE/app";
 
 if (isset($_SESSION['username'])) {
-    header("Location: ../admin/dashboard.php?page=home");
+    header("Location: ../index.php");
 }
 if (isset($_POST['submit'])) {
     include("../config.php");
@@ -21,7 +22,7 @@ if (isset($_POST['submit'])) {
         $_SESSION['username'] = $row['username'];
         $_SESSION['id'] = $row['id'];
 
-        header("Location: ../index.php");
+        header("Location: ..//index.php");
     } else {
         echo "<script>alert('Username atau password Anda salah. Silahkan coba lagi!')</script>";
     }
@@ -55,7 +56,7 @@ if (isset($_POST['submit'])) {
             <div class="card-body">
                 <p class="login-box-msg">Login</p>
 
-                <form action="sign_user.php" method="post">
+                <form action="login.php" method="post">
                     <div class="input-group mb-3">
                         <input type="text" name="username" class="form-control" placeholder="username" required>
                         <div class="input-group-append">
@@ -82,6 +83,10 @@ if (isset($_POST['submit'])) {
                            <a href="<?= $base_url_admin; ?>/sign.php">Login sebagai Admin</a>
                         </div>
                         <!-- /.col -->
+                    </div>
+
+                    <div class="col-12 mt-2 text-center">
+                        <a class="" href="<?= $base_url_admin; ?>/register.php">Register</a>
                     </div>
                     
                 </form>
