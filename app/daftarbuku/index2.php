@@ -170,6 +170,10 @@ $header = mysqli_query($mysqli, "SELECT * from tb_slider");
 
     <div class="nav-scroller py-1 mb-2">
       <nav class="nav d-flex justify-content-between">
+        <a class="p-2 text-muted" href="../index.php">Beranda</a>
+        <a class="p-2 text-muted" href="../artikel/index.php">Artikel</a>
+        <a class="p-2 text-muted" href="">Daftar Buku</a>
+        <a class="p-2 text-muted" href="">Gallery</a>
         <?php
         $menu = mysqli_query($mysqli, "SELECT * from tb_menu");
         while ($data_menu = mysqli_fetch_array($menu)) {
@@ -263,8 +267,8 @@ $header = mysqli_query($mysqli, "SELECT * from tb_slider");
         </div>
         <div class="col-lg-3 col-3">
           <div class="btn-group">
-            <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-              Large button
+            <button class="btn  btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+              pilih kategori
             </button>
             <div class="dropdown-menu">
 
@@ -285,6 +289,13 @@ $header = mysqli_query($mysqli, "SELECT * from tb_slider");
 
 
     </div>
+    <?php 
+    
+    $nama_kategori = mysqli_query($mysqli,"SELECT * FROM kategori WHERE id = $kategori_id");
+    while($data = mysqli_fetch_array($nama_kategori)):
+    ?>
+    <h3 class="text-center"><?= $data['nama_kategori']; ?></h3>
+    <?php endwhile ?>
     <div class="row mb-2 product-wrapper" id="product-wrapper">
 
       <?php
@@ -298,9 +309,9 @@ $header = mysqli_query($mysqli, "SELECT * from tb_slider");
       ?>
 
         <div class="col-md-4 ">
-          <div class="card mx-auto mt-2" style="width: 18rem;">
+          <div class="card mx-auto mt-3" style="width: 18rem;">
             <form action="" method="post">
-              <img src="../admin/buku/image/<?= $data['gambar']; ?>" class="card-img-top img-fluid" alt="...">
+              <img src="../admin/buku/image/<?= $data['gambar']; ?>" class="card-img-top " height="200" alt="...">
               <div class="card-body text-center">
                 <h5 class="card-title"><?= $data['judul_buku']; ?></h5>
                 <p class="card-text">deskripsi : <?= $data['deskripsi']; ?></p>

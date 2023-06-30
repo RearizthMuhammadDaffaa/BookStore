@@ -9,14 +9,15 @@ session_start();
 // include("config.php");
 require 'config.php';
 
-if(!isset($_SESSION['username'])){
+if (!isset($_SESSION['username'])) {
   echo "
   <script>alert('login terlebih dahulu')</script>
   ";
   header('Location: admin/login.php');
- 
+
   exit;
 }
+
 
 
 $no = 1;
@@ -113,6 +114,7 @@ $header = mysqli_query($mysqli, "SELECT * from tb_slider");
   <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900" rel="stylesheet">
   <!-- Custom styles for this template -->
   <link href="blog.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -129,8 +131,8 @@ $header = mysqli_query($mysqli, "SELECT * from tb_slider");
         <div class="col-4 d-flex justify-content-end align-items-center">
           <div class="dropdown mx-4">
             <a class=" dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-             <img src="uploads/no-photo.jpg"  class="img-fluid rounded-circle" height="30" width="30" alt="">
-             <span><?= $_SESSION['username']; ?></span>
+              <img src="uploads/no-photo.jpg" class="img-fluid rounded-circle" height="30" width="30" alt="">
+              <span><?= $_SESSION['username']; ?></span>
             </a>
 
             <div class="dropdown-menu">
@@ -143,7 +145,7 @@ $header = mysqli_query($mysqli, "SELECT * from tb_slider");
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
               <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
             </svg>
-          
+
           </a>
         </div>
       </div>
@@ -151,7 +153,12 @@ $header = mysqli_query($mysqli, "SELECT * from tb_slider");
 
     <div class="nav-scroller py-1 mb-2">
       <nav class="nav d-flex justify-content-between">
+        <a class="p-2 text-muted" href="">Beranda</a>
+        <a class="p-2 text-muted" href="artikel/index.php">Artikel</a>
+        <a class="p-2 text-muted" href="daftarbuku/index.php">Daftar Buku</a>
+        <a class="p-2 text-muted" href="">Gallery</a>
         <?php
+
         while ($data_menu = mysqli_fetch_array($menu)) {
         ?>
           <a class="p-2 text-muted" href="<?= $data['nama_menu']; ?>/index.php"> <?= $data_menu['nama_menu'] ?></a>
@@ -213,45 +220,96 @@ $header = mysqli_query($mysqli, "SELECT * from tb_slider");
         </div>
       </div>
     </div>
+    <!-- test -->
 
-    <div class="row mb-2">
-      <?php
-      while ($data = mysqli_fetch_array($artikel)) {
-      ?>
-        <div class="col-md-6">
-          <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-            <div class="col p-4 d-flex flex-column position-static">
-              <strong class="d-inline-block mb-2 text-primary"><?= $data['nama_kategori'] ?></strong>
-              <h3 class="mb-0">New post</h3>
-              <div class="mb-1 text-muted"><?= date('d-M-Y', strtotime($data['created_time'])) ?></div>
-              <p class="card-text mb-auto text-justify"><?= substr($data['content_artikel'], 0, 100) . '...' ?></p>
-              <a href="#" class="stretched-link">Continue reading</a>
+    <div class="container mt-2 ">
+      <div class="row pt-5 m-auto">
+        <div class="col-md-6 col-lg-4 pb-3">
+
+
+          <div class="card card-custom bg-white border-white border-0">
+            <div class="card-custom-img" style="background-image: url(uploads/bannerKomik.jpg);"></div>
+            <div class="card-custom-avatar">
+              <img class="img-fluid" src="uploads/buku.jpg" alt="Avatar" />
             </div>
-            <div class="col-auto d-none d-lg-block">
-              <!-- <div class="user-panel d-flex">
-                <div class="image">
-                       <img src="./admin/artikel/image/ <?= $data["cover"]; ?>" alt="Gambar" class="img-square elevation-1" style="width: 60px; height: 50px; margin-left: auto; margin-right: auto;">
-                                      </div>
-                                        </div>     -->
-              <img width="200px" class="rounded float-right" src="./admin/artikel/image/ <?= $data['cover'] ?>" alt="">
+            <div class="card-body" style="overflow-y: auto">
+              <h4 class="card-title">Daftar Buku</h4>
+            </div>
+            <div class="card-footer" style="background: inherit; border-color: inherit;">
+
+              <a href="daftarbuku/index.php" class="btn btn-outline-primary">Lihat daftar buku</a>
             </div>
           </div>
+          <!-- Copy until here -->
+
         </div>
-      <?php } ?>
+
+        <div class="col-md-6 col-lg-4 pb-3">
+
+          <!-- Copy the content below until next comment -->
+          <div class="card card-custom bg-white border-white border-0">
+            <div class="card-custom-img" style="background-image: url(uploads/banner\ artikel.jpg);"></div>
+            <div class="card-custom-avatar">
+              <img class="img-fluid" src="uploads/istockphoto-1256458876-612x612.jpg" alt="Avatar" />
+            </div>
+            <div class="card-body" style="overflow-y: auto">
+              <h4 class="card-title">Artikel</h4>
+            </div>
+            <div class="card-footer" style="background: inherit; border-color: inherit;">
+
+              <a href="artikel/index.php" class="btn btn-outline-primary">lihat Semua Artikel</a>
+            </div>
+          </div>
+          <!-- Copy until here -->
+
+        </div>
+        <div class="col-md-6 col-lg-4 pb-3">
+
+          <!-- Copy the content below until next comment -->
+          <div class="card card-custom bg-white border-white border-0">
+            <div class="card-custom-img" style="background-image: url(http://res.cloudinary.com/d3/image/upload/c_scale,q_auto:good,w_1110/trianglify-v1-cs85g_cc5d2i.jpg);"></div>
+            <div class="card-custom-avatar">
+              <img class="img-fluid" src="uploads/download.png" alt="Avatar" />
+            </div>
+            <div class="card-body" style="overflow-y: auto">
+              <h4 class="card-title">Gallery</h4>
+            </div>
+            <div class="card-footer" style="background: inherit; border-color: inherit;">
+              <a href="#" class="btn btn-outline-primary">lihat Gallery</a>
+            </div>
+          </div>
+          <!-- Copy until here -->
+
+        </div>
+
+      </div>
     </div>
+
+
+    <!-- akhir test -->
+
+    <!-- product show  -->
+
+    
+
+
+
+    <!-- akhir product show -->
+
   </div>
 
-  <main role="main" class="container">
+  <main role="main" class="container mt-5">
 
     <div class="row">
 
       <div class="col-md-8 blog-main">
+        <h3 class="pb-4 mb-4 font-italic border-bottom">
+          New Artikel Post
+        </h3>
         <?php
         while ($dataArtikel = mysqli_fetch_array($new_artikel)) {
         ?>
-          <h3 class="pb-4 mb-4 font-italic border-bottom">
-            New Update Post
-          </h3>
+
 
           <div class="blog-post">
             <h2 class="blog-post-title">
@@ -324,8 +382,6 @@ $header = mysqli_query($mysqli, "SELECT * from tb_slider");
         <div class="col-lg-2"></div>
       </div>
     </div>
-
-
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

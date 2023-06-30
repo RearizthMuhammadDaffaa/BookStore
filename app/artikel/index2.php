@@ -43,7 +43,7 @@ $total_halaman = ceil($jumlah_data / $batas);
 //                            ");
 
 $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
-// $menu = mysqli_query($mysqli, "SELECT * from tb_menu");
+
 
 ?>
 <!doctype html>
@@ -137,12 +137,17 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
 
     <div class="nav-scroller py-1 mb-2">
       <nav class="nav d-flex justify-content-between">
+        <a class="p-2 text-muted" href="../index.php">Beranda</a>
+        <a class="p-2 text-muted" href="">Artikel</a>
+        <a class="p-2 text-muted" href="../daftarbuku/index.php">Daftar Buku</a>
+        <a class="p-2 text-muted" href="">Gallery</a>
         <?php
-        // while ($data_menu = mysqli_fetch_array($menu)) {
+        $menu = mysqli_query($mysqli, "SELECT * from tb_menu");
+        while ($data_menu = mysqli_fetch_array($menu)) {
         ?>
-        <!-- <a class="p-2 text-muted" href="#"></a> -->
-        <!-- <?= $data_menu['nama_menu'] ?> -->
-        <?php //} 
+          <a class="p-2 text-muted" href="#"></a>
+          <?= $data_menu['nama_menu'] ?>
+        <?php }
         ?>
       </nav>
     </div>
@@ -323,32 +328,32 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
 
       </main><!-- /.container -->
 
-    <footer class="blog-footer">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-2 col-6">
-          <h2>social</h2>
-          <table class="table table-borderless mt-2">
-            <tr class="">
-              <?php $social = mysqli_query($mysqli, "SELECT * FROM tb_social");
-              while ($data = mysqli_fetch_array($social)) :
-              ?>
-                <td><img src="../admin/social/image/<?= $data['icon']; ?>" alt="" class="rounded-circle" width="30px" height="30"></td>
-                <td class="ml-4"><?= $data['nama_sosmed']; ?></td>
-            </tr>
-          <?php endwhile ?>
-          </table>
-        </div>
-        <div class="col-lg-8 col-6 d-flex align-items-center justify-content-center flex-wrap">
-          <p class="text-break">Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>. <a href="#" class="text-break">Back to top</a></p>
-          <p>
+      <footer class="blog-footer">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-2 col-6">
+              <h2>social</h2>
+              <table class="table table-borderless mt-2">
+                <tr class="">
+                  <?php $social = mysqli_query($mysqli, "SELECT * FROM tb_social");
+                  while ($data = mysqli_fetch_array($social)) :
+                  ?>
+                    <td><img src="../admin/social/image/<?= $data['icon']; ?>" alt="" class="rounded-circle" width="30px" height="30"></td>
+                    <td class="ml-4"><?= $data['nama_sosmed']; ?></td>
+                </tr>
+              <?php endwhile ?>
+              </table>
+            </div>
+            <div class="col-lg-8 col-6 d-flex align-items-center justify-content-center flex-wrap">
+              <p class="text-break">Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>. <a href="#" class="text-break">Back to top</a></p>
+              <p>
 
-          </p>
+              </p>
+            </div>
+            <div class="col-lg-2"></div>
+          </div>
         </div>
-        <div class="col-lg-2"></div>
-      </div>
-    </div>
-  </footer>
+      </footer>
 
 
       <script src="cari.js"></script>

@@ -131,14 +131,7 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori");
 
 <body>
 
-  <?php
-  if (isset($massage)) {
-    foreach ($massage as $msg) {
-      echo '<div class="message" onclick="this.remove();">' . $msg . '</div>';
-    }
-  }
 
-  ?>
 
   <div class="container">
     <header class="blog-header py-3">
@@ -157,8 +150,6 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori");
             </a>
 
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">Edit Profile</a>
-              <a class="dropdown-item" href="#">Isi saldo</a>
               <a class="dropdown-item" href="logout.php">Logout</a>
             </div>
           </div>
@@ -175,7 +166,7 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori");
       <nav class="nav d-flex justify-content-between">
         <a class="p-2 text-muted" href="../index.php">Beranda</a>
         <a class="p-2 text-muted" href="../artikel/index.php">Artikel</a>
-        <a class="p-2 text-muted" href="">Daftar Buku</a>
+        <a class="p-2 text-muted" href="../daftarbuku/index.php">Daftar Buku</a>
         <a class="p-2 text-muted" href="">Gallery</a>
         <?php
         $menu = mysqli_query($mysqli, "SELECT * from tb_menu");
@@ -244,14 +235,7 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori");
         </div>
 
       </div>
-      <form action="" method="post">
-        <div class="input-group mb-3">
-          <input type="text" id="keywoard" class="form-control" placeholder="search" aria-label="Recipient's username">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" id="btn-cari">Cari</button>
-          </div>
-        </div>
-      </form>
+
 
     </div>
 
@@ -263,143 +247,77 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori");
       <div class="row d-flex align-items-center">
         <div class="col-lg-6 col-6">
           <h3 class="-italic ">
-            New Update Post
+            Gallery
           </h3>
         </div>
-        <div class="col-lg-3 col-3">
-          <h3 class="text-kategori">filter by category</h3>
-        </div>
-        <div class="col-lg-3 col-3">
-          <div class="btn-group mb-2">
-            <button class="btn  btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-              pilih kategori
-            </button>
-            <div class="dropdown-menu">
-
-              <ul>
-                <li><a href="index.php">Semua kategori</a></li>
-                <?php while ($data = mysqli_fetch_array($kategori)) : ?>
-                  <li><a href="index2.php?kategori_id=<?= $data['id']; ?>"> <?= $data['nama_kategori']; ?></a></li>
-                <?php endwhile ?>
-              </ul>
 
 
-
-
-            </div>
-          </div>
-        </div>
       </div>
 
 
     </div>
-    <h3 class="text-center">semua kategori</h3>
-    <div class="row mb-2 product-wrapper" id="product-wrapper">
-
-      <?php
-
-      while ($data = mysqli_fetch_array($new_artikel)) {
-      ?>
-
-        <div class="col-md-4 ">
-
-          <div class="card mx-auto mt-3" style="width: 18rem;">
-            <form action="" method="post">
-              <img src="../admin/buku/image/<?= $data['gambar']; ?>" width="100px" height="200px" class="card-img-top " alt="...">
-              <div class="card-body text-center">
-                <h5 class="card-title"><?= $data['judul_buku']; ?></h5>
-                <p class="card-text">deskripsi : <?= $data['deskripsi']; ?></p>
-                <p class="card-text">harga : <?= number_format($data['harga']); ?></p>
-                <div class="d-flex justify-content-center  flex-column">
-                  <a href="detail.php?id_buku=<?= $data['id']; ?>" class="btn btn-primary">Detail</a>
-                  <button type="submit" class="btn btn-success mt-2 " name="add_cart">ADD to chart</button>
-                </div>
-
-              </div>
-          </div>
-
-          <input type="hidden" name="judul_buku" value="<?= $data['judul_buku']; ?>">
-          <input type="hidden" name="harga" value=" <?= $data['harga']; ?>">
-          <input type="hidden" name="gambar_buku" value="<?= $data['gambar']; ?>">
-          <input type="hidden" name="id_buku" value="<?= $data['id']; ?>">
-
-          </form>
-        </div>
-      <?php } ?>
-
-      <!-- filter data -->
-
-
-      <!-- end filter data -->
-
-    </div>
-  </div>
-
-  <main role="main" class="container">
 
     <div class="row">
 
-      <div class="col-12 blog-main">
-
-
-        <nav class="blog-pagination">
-          <ul class="pagination justify-content-center">
-            <li class="page-item">
-              <a class="page-link" <?php if ($halaman > 1) {
-                                      echo "href='?halaman=$previous'";
-                                    } ?>>Sebelumnya</a>
-            </li>
-            <?php
-
-            for ($x = 1; $x <= $total_halaman; $x++) {
-            ?>
-              <li class="page-item"><a class="page-link" href="?halaman=<?= $x ?>"><?= $x; ?></a></li>
-            <?php
-            }
-            ?>
-            <li class="page-item">
-              <a class="page-link" <?php if ($halaman < $total_halaman) {
-                                      echo "href='?halaman=$next'";
-                                    } ?>>Selanjutnya</a>
-            </li>
-          </ul>
-        </nav>
-
-      </div><!-- /.row -->
-
-
-  </main><!-- /.container -->
-
-  <footer class="blog-footer">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-2 col-6">
-          <h2>social</h2>
-          <table class="table table-borderless mt-2">
-            <tr class="">
-              <?php $social = mysqli_query($mysqli, "SELECT * FROM tb_social");
-              while ($data = mysqli_fetch_array($social)) :
-              ?>
-                <td><img src="../admin/social/image/<?= $data['icon']; ?>" alt="" class="rounded-circle" width="30px" height="30"></td>
-                <td class="ml-4"><?= $data['nama_sosmed']; ?></td>
-            </tr>
-          <?php endwhile ?>
-          </table>
+      <?php 
+      $gallery = mysqli_query($mysqli,"SELECT * FROM tb_gallery");
+      while($data = mysqli_fetch_array($gallery)):
+      ?>
+      <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="card">
+          <img class="card-img-top" src="../admin/gallery/image/<?= $data['gambar']; ?>" width="200px" height="200" alt="Card image cap">
+          <div class="card-body">
+            <p class="card-text"><?= $data['nama']; ?></p>
+          </div>
         </div>
-        <div class="col-lg-8 col-6 d-flex align-items-center justify-content-center flex-wrap">
-          <p class="text-break">Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>. <a href="#" class="text-break">Back to top</a></p>
-          <p>
-
-          </p>
-        </div>
-        <div class="col-lg-2"></div>
       </div>
+      <?php endwhile ?>
     </div>
-  </footer>
-  <script src="cari.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+
+    <main role="main" class="container">
+
+      <div class="row">
+
+        <div class="col-12 blog-main">
+
+
+
+
+        </div><!-- /.row -->
+
+
+    </main><!-- /.container -->
+
+    <footer class="blog-footer">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-2 col-6">
+            <h2>social</h2>
+            <table class="table table-borderless mt-2">
+              <tr class="">
+                <?php $social = mysqli_query($mysqli, "SELECT * FROM tb_social");
+                while ($data = mysqli_fetch_array($social)) :
+                ?>
+                  <td><img src="../admin/social/image/<?= $data['icon']; ?>" alt="" class="rounded-circle" width="30px" height="30"></td>
+                  <td class="ml-4"><?= $data['nama_sosmed']; ?></td>
+              </tr>
+            <?php endwhile ?>
+            </table>
+          </div>
+          <div class="col-lg-8 col-6 d-flex align-items-center justify-content-center flex-wrap">
+            <p class="text-break">Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>. <a href="#" class="text-break">Back to top</a></p>
+            <p>
+
+            </p>
+          </div>
+          <div class="col-lg-2"></div>
+        </div>
+      </div>
+    </footer>
+    <script src="cari.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
 
 </body>
 

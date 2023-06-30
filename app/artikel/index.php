@@ -137,13 +137,17 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
 
     <div class="nav-scroller py-1 mb-2">
       <nav class="nav d-flex justify-content-between">
-      <?php
+        <a class="p-2 text-muted" href="../index.php">Beranda</a>
+        <a class="p-2 text-muted" href="">Artikel</a>
+        <a class="p-2 text-muted" href="../daftarbuku/index.php">Daftar Buku</a>
+        <a class="p-2 text-muted" href="">Gallery</a>
+        <?php
         $menu = mysqli_query($mysqli, "SELECT * from tb_menu");
         while ($data_menu = mysqli_fetch_array($menu)) {
         ?>
-        <a class="p-2 text-muted" href=""><?= $data_menu['nama_menu'] ?></a>
-        
-        <?php } 
+          <a class="p-2 text-muted" href=""><?= $data_menu['nama_menu'] ?></a>
+
+        <?php }
         ?>
         ?>
       </nav>
@@ -280,7 +284,7 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
 
         </div>
       </div>
-          
+
 
       <main role="main" class="container">
 

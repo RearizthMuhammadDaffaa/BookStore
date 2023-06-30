@@ -15,6 +15,12 @@ $users = mysqli_query($mysqli, 'SELECT count(*) jml FROM tb_user');
 $row_users = mysqli_fetch_assoc($users);
 $buku = mysqli_query($mysqli, 'SELECT count(*) jml FROM data_buku');
 $row_buku = mysqli_fetch_assoc($buku);
+
+
+$test = mysqli_query($mysqli,"SELECT terjual FROM data_buku");
+$judul_buku = mysqli_fetch_assoc($test);
+
+
 ?>
 <!-- Main content -->
 <div class="content">
@@ -81,6 +87,54 @@ $row_buku = mysqli_fetch_assoc($buku);
             </div>
 
         </div>
+
         <!-- /.row -->
     </div><!-- /.container-fluid -->
 </div>
+
+<div class="container">
+    <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+   
+   
+   const user = <?php echo json_encode($judul_buku); ?>;
+   const buku = <?php echo json_encode($row_buku); ?>;
+    const data = {
+        labels: [],
+        datasets: [{
+            label: '# of Votes',
+            data: user,
+            borderWidth: 1
+        },
+        {
+            label: '# of Votes',
+            data: buku,
+            borderWidth: 1
+        },
+        
+    ]
+    }
+
+    const config = {
+        type: 'bar',
+        data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    }
+
+    const myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+    )
+
+   
+</script>

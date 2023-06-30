@@ -36,6 +36,79 @@ if (isset($_GET['remove'])) {
   header('location: cart.php');
 }
 
+$allArtikel = mysqli_query($mysqli, "SELECT tb_artikel.*,
+                            kategori_artikel.nama_kategori,
+                            tb_admin.nama_operator
+                            FROM tb_artikel
+                            INNER JOIN kategori_artikel ON tb_artikel.id_kategori = kategori_artikel.id
+                            INNER JOIN tb_admin ON tb_artikel.user_id = tb_admin.id
+                            ORDER BY id DESC
+                            ");
+
+if (isset($_POST['checkout'])) {
+
+
+  try {
+    $mysqli->begin_transaction();
+    $cart = mysqli_query($mysqli, "SELECT * from cart WHERE user_id ='$userid'");
+    $data_buku = mysqli_query($mysqli, "SELECT cart.*,data_buku.jumlah_buku FROM cart INNER 
+                                         JOIN data_buku ON cart.id_buku = data_buku.id WHERE cart.user_id = '$userid'   
+    ");
+    $grand_total = 0;
+
+
+
+
+    $data_user = mysqli_query($mysqli, "SELECT saldo from tb_user WHERE id = '$userid'");
+    $getSaldo = $data_user->fetch_assoc();
+    $saldo = $getSaldo['saldo'];
+
+    while ($data = mysqli_fetch_array($cart)) {
+      $id_buku = $data['id_buku'];
+      $subtotal = ($data['harga'] * $data['quantity']);
+      $grand_total += $subtotal;
+    }
+
+
+    while ($data = mysqli_fetch_array($data_buku)) {
+      $quantity = $data['quantity'];
+      $idbuku = $data['id_buku'];
+      $judul_buku = $data['judul_buku'];
+      $created_time = date("Y-m-d H:i:s");
+      $subtotal = ($data['harga'] * $data['quantity']);
+      $checkStock = ($data['jumlah_buku'] - $quantity);
+      if ($checkStock >= 0 && $saldo >= $grand_total) {
+         mysqli_query($mysqli, "UPDATE tb_user SET saldo = saldo - $grand_total WHERE id = $userid");
+      
+        $result = mysqli_query($mysqli, "UPDATE data_buku set jumlah_buku = jumlah_buku - $quantity , terjual = terjual + $quantity  WHERE id = '$idbuku'");
+        mysqli_query($mysqli, "INSERT INTO riwayat_transaksi(user_id,judul_buku,created_time,jumlah,total_harga) 
+                              VALUES('$userid','$judul_buku','$created_time','$quantity','$subtotal')
+        ");
+        mysqli_query($mysqli, "DELETE FROM cart WHERE user_id = '$userid'");
+        echo "<script>alert('transaksi berhasil ')</script>";
+        $mysqli->commit();
+      } else {
+        echo "<script>alert('maaf mungkin saldo anda tidak cukup atau stok buku sudah habis')</script>";
+        $mysqli->rollback();
+      }
+    }
+
+
+
+    // if ($saldo >= $grand_total) {
+      
+    //   $mysqli->commit();
+    // } else {
+
+    //   echo "<script>alert('maaf saldo anda kurang')</script>";
+    //   $mysqli->rollback();
+    // }
+  } catch (Exception $e) {
+    echo "Terjadi kesalahan: " . $e->getMessage();
+    $mysqli->rollback();
+  }
+}
+
 
 $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
 $about = mysqli_query($mysqli, "SELECT * FROM tb_about");
@@ -173,10 +246,14 @@ $cart = mysqli_query($mysqli, "SELECT * from cart WHERE user_id ='$userid'");
 
     <div class="nav-scroller py-1 mb-2">
       <nav class="nav d-flex justify-content-between">
+      <a class="p-2 text-muted" href="index.php">Beranda</a>
+        <a class="p-2 text-muted" href="artikel/index.php">Artikel</a>
+        <a class="p-2 text-muted" href="../daftarbuku/index.php">Daftar Buku</a>
+        <a class="p-2 text-muted" href="">Gallery</a>
         <?php
         while ($data_menu = mysqli_fetch_array($menu)) {
         ?>
-          <a class="p-2 text-muted" href="<?= $data['nama_menu']; ?>/index.php"> <?= $data_menu['nama_menu'] ?></a>
+          <!-- <a class="p-2 text-muted" href="<?= $data['nama_menu']; ?>/index.php"> <?= $data_menu['nama_menu'] ?></a> -->
 
         <?php } ?>
       </nav>
@@ -210,6 +287,7 @@ $cart = mysqli_query($mysqli, "SELECT * from cart WHERE user_id ='$userid'");
               <td>
                 <form action="" method="post">
                   <input type="hidden" name="cart_id" value="<?= $ct['id']; ?>">
+                  <input type="hidden" name="idbuku" value="<?= $ct['id_buku']; ?>">
                   <input type="number" name="updated_quantity" value="<?= $ct['quantity']; ?>" class="input-cart">
                   <button type="submit" name="update_cart" class="btn btn-warning btn-updated">updated</button>
                 </form>
@@ -229,7 +307,9 @@ $cart = mysqli_query($mysqli, "SELECT * from cart WHERE user_id ='$userid'");
       </table>
     </div>
     <div class="col-12  d-flex justify-content-center my-3">
-      <button class="btn btn-primary btn-checkout">Checkout</button>
+      <form action="" method="post">
+        <button class="btn btn-primary btn-checkout" name="checkout" type="submit">Checkout</button>
+      </form>
     </div>
 
 

@@ -21,6 +21,7 @@ if (isset($_POST['submit'])) {
         $row = mysqli_fetch_assoc($result);
         $_SESSION['username'] = $row['username'];
         $_SESSION['id'] = $row['id'];
+       
 
         header("Location: ../admin/dashboard.php?page=home");
     } else {
