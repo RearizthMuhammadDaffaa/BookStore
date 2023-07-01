@@ -4,13 +4,25 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 include("../../config.php");
 include('session.php');
+$usertype = $_SESSION['usertype'];
+$username = $_SESSION['username'];
+
+
+
+if (empty($username) || ($usertype == '1')) {
+    echo "
+  <script>alert('silahkan logout dan login terlebih dahulu sebagai admin')</script>
+  ";
+    header('Location: ../sign.php');
+    exit;
+}
 
 if (isset($_POST['submit'])) {
     $judul_artikel = @$_POST['judul_artikel'];
     $slug = preg_replace('/[^a-z0-9]+/i', '-', trim(strtolower($_POST["judul_artikel"])));
-   
+
     $user_id = $_SESSION['id'];
-   
+
     $nama_header = @$_POST['nama_header'];
     $sql = "SELECT * FROM tb_artikel WHERE judul_artikel='$judul_artikel'";
 
@@ -34,11 +46,11 @@ if (isset($_POST['submit'])) {
 
             //pindahkan file yang di upload ke directory tujuan bila berhasil jalankan perintah query untuk mennyimpan ke database
             if (move_uploaded_file($gambar['tmp_name'], $dir . $newName)) {
-               
-                    $result = mysqli_query($mysqli, "INSERT INTO tb_slider(nama,gambar)
+
+                $result = mysqli_query($mysqli, "INSERT INTO tb_slider(nama,gambar)
                     VALUES('$nama_header','$newName')");
-                    header("Location:../dashboard.php?page=header");
-                    return true;
+                header("Location:../dashboard.php?page=header");
+                return true;
             } else {
                 echo '<script type="text/javascript">alert("Foto gagal diupload");window.history.go(-1);</script>';
                 return false;
@@ -48,8 +60,6 @@ if (isset($_POST['submit'])) {
         echo "<script>alert('terjadi kesalahan')</script>";
         return false;
     }
-
-    
 }
 // 
 ?>
@@ -66,8 +76,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <title>Admin Panel</title>
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
@@ -97,13 +106,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                                     <div class="card-tools">
                                         <!-- This will cause the card to maximize when clicked -->
-                                        <a href="<?= $base_url_admin ?>/dashboard.php?page=artikel"
-                                            class="btn btn-info">Kembali</a>
+                                        <a href="<?= $base_url_admin ?>/dashboard.php?page=artikel" class="btn btn-info">Kembali</a>
                                     </div>
                                     <!-- /.card-tools -->
                                 </div>
-                                <form action="../header/create.php?page=header" method="post"
-                                    enctype="multipart/form-data">
+                                <form action="../header/create.php?page=header" method="post" enctype="multipart/form-data">
 
                                     <div class="card-body">
 
@@ -111,14 +118,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <label for="judul_artikel">Nama Header</label>
                                             <input type="text" class="form-control" name="nama_header" required>
                                         </div>
-            
+
                                         <div class="form-group">
                                             <label for="content_artikel" class="col-sm-2 col-form-label">Gambar</label>
                                             <div class="col-sm-4">
-                                                <input type="file" class="form-control" name="gambar"
-                                                    placeholder="Gambar" required autocomplete="off" accept="image/*">
+                                                <input type="file" class="form-control" name="gambar" placeholder="Gambar" required autocomplete="off" accept="image/*">
                                             </div>
-                                          
+
 
                                         </div>
                                         <div class="card-footer">

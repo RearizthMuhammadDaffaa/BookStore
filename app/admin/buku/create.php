@@ -4,6 +4,19 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 include("../../config.php");
 include('session.php');
+$usertype = $_SESSION['usertype'];
+$username = $_SESSION['username'];
+
+
+
+if (empty($username) || ($usertype == '1')) {
+    echo "
+  <script>alert('silahkan logout dan login terlebih dahulu sebagai admin')</script>
+  ";
+    header('Location: ../sign.php');
+    exit;
+}
+
 
 if (isset($_POST['submit'])) {
     $judul_buku = @$_POST['judul_buku'];

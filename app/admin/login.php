@@ -15,14 +15,15 @@ if (isset($_POST['submit'])) {
     $username = @$_POST['username'];
     $password = md5(@$_POST['password']);
 
-    $sql = "SELECT * FROM tb_user WHERE username='$username' AND password='$password'";
+    $sql = "SELECT * FROM tb_admin WHERE username='$username' AND password='$password'";
     $result = mysqli_query($mysqli, $sql);
     if ($result->num_rows > 0) {
         $row = mysqli_fetch_assoc($result);
+        $_SESSION['usertype'] = $row['usertype'];
         $_SESSION['username'] = $row['username'];
         $_SESSION['id'] = $row['id'];
 
-        header("Location: ..//index.php");
+        header("Location: ../index.php");
     } else {
         echo "<script>alert('Username atau password Anda salah. Silahkan coba lagi!')</script>";
     }

@@ -1,6 +1,35 @@
 <?php
 include_once("../config.php");
 
+
+
+
+$usertype = $_SESSION['usertype'];
+$username = $_SESSION['username'];
+
+session_start();
+
+if (!isset($_SESSION['usertype']) == "1") {
+    echo "
+    <script>alert('login terlebih dahulu')</script>
+    ";
+    header('Location: ../sign.php');
+  
+    exit;
+  }
+
+if (empty($username) || ($usertype == '1')) {
+  echo "
+  <script>alert('login terlebih dahulu')</script>
+  ";
+  header('Location: ../sign.php');
+
+  exit;
+}
+
+
+
+
 ?>
 <!-- Main content -->
 <div class="content">

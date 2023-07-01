@@ -96,6 +96,10 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel WHERE id='$id'
         </div>
       </div>
     </header>
+    <div class="container text-right">
+    <button class="btn btn-primary mt-3"><a href="index.php" class="text-light">Kembali</a></button>
+    </div>
+    
 
 
     <main>

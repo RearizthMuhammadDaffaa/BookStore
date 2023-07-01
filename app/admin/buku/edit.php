@@ -9,6 +9,19 @@ define('SITE_ROOT', realpath(dirname(__FILE__)));
 // Display selected user data based on id
 // Getting id from url
 $id = @$_GET['id'];
+$usertype = $_SESSION['usertype'];
+$username = $_SESSION['username'];
+
+
+
+if (empty($username) || ($usertype == '1')) {
+  echo "
+  <script>alert('login terlebih dahulu')</script>
+  ";
+  header('Location: ../sign.php');
+
+  exit;
+}
 
 // Fetech user data based on id
 $res_artikel = mysqli_query($mysqli, "SELECT * FROM data_buku WHERE id= $id ");

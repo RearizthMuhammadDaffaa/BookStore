@@ -25,7 +25,7 @@ ORDER BY id DESC");
               <strong class="d-inline-block mb-2 text-primary"><?= $data['nama_kategori'] ?></strong>
               <h3 class="mb-0"><?= $data['judul_artikel']; ?></h3>
               <div class="mb-1 text-muted"><?= date('d-M-Y', strtotime($data['created_time'])) ?></div>
-              <p class="card-text mb-auto text-justify"><?= substr($data['content_artikel'], 0, 30) . '...' ?></p>
+              <p class="card-text mb-auto text-justify text-break"><?= substr($data['content_artikel'], 0, 50) . '...' ?></p>
               <a href="artikelDetail.php?id=<?= $data['id']; ?>" class="stretched-link">Continue reading</a>
             </div>
             <div class="col-auto  d-lg-block">
@@ -34,7 +34,7 @@ ORDER BY id DESC");
                        <img src="./admin/artikel/image/ <?= $data["cover"]; ?>" alt="Gambar" class="img-square elevation-1" style="width: 60px; height: 50px; margin-left: auto; margin-right: auto;">
                                       </div>
                                         </div>     -->
-              <img width="200px" class="img-thumbnail " src="../admin/artikel/image/<?= $data['cover']; ?>" alt="">
+              <img width="250px" height="100%" class="" src="../admin/artikel/image/<?= $data['cover']; ?>" alt="">
             </div>
           </div>
         </div>

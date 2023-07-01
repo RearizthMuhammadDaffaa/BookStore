@@ -9,6 +9,8 @@ session_start();
 // include("config.php");
 require 'config.php';
 
+
+
 if (!isset($_SESSION['username'])) {
   echo "
   <script>alert('login terlebih dahulu')</script>
@@ -129,15 +131,15 @@ $header = mysqli_query($mysqli, "SELECT * from tb_slider");
           <a class="blog-header-logo text-dark" href="#">Book Store</a>
         </div>
         <div class="col-4 d-flex justify-content-end align-items-center">
-          <div class="dropdown mx-4">
+          <div class="dropdown mr-5">
             <a class=" dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
               <img src="uploads/no-photo.jpg" class="img-fluid rounded-circle" height="30" width="30" alt="">
               <span><?= $_SESSION['username']; ?></span>
             </a>
 
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">Edit Profile</a>
-              <a class="dropdown-item" href="#">Isi saldo</a>
+              <a class="dropdown-item" href="profile.php">Edit Profile</a>
+              <a class="dropdown-item" href="order.php">Order</a>
               <a class="dropdown-item" href="logout.php">Logout</a>
             </div>
           </div>
@@ -156,7 +158,7 @@ $header = mysqli_query($mysqli, "SELECT * from tb_slider");
         <a class="p-2 text-muted" href="">Beranda</a>
         <a class="p-2 text-muted" href="artikel/index.php">Artikel</a>
         <a class="p-2 text-muted" href="daftarbuku/index.php">Daftar Buku</a>
-        <a class="p-2 text-muted" href="">Gallery</a>
+        <a class="p-2 text-muted" href="Gallery/index.php">Gallery</a>
         <?php
 
         while ($data_menu = mysqli_fetch_array($menu)) {

@@ -6,23 +6,12 @@ include('session.php');
 // Getting id from url
 $id = @$_GET['id'];
 
-$usertype = $_SESSION['usertype'];
-$username = $_SESSION['username'];
-
-
-
-if (empty($username) || ($usertype == '1')) {
-    echo "
-  <script>alert('silahkan logout dan login terlebih dahulu sebagai admin')</script>
-  ";
-    header('Location: ../sign.php');
-    exit;
-}
 // Fetech user data based on id
-$result = mysqli_query($mysqli, "SELECT * FROM kategori_artikel WHERE id=$id");
+$result = mysqli_query($mysqli, "SELECT * FROM tb_admin WHERE id=$id");
 
-while ($kategori = mysqli_fetch_array($result)) {
-    $row_kategori = $kategori['nama_kategori'];
+while ($user_data = mysqli_fetch_array($result)) {
+    $row_username = $user_data['username'];
+    $row_nama_operator = $user_data['nama_operator'];
 }
 ?>
 <?php
@@ -30,13 +19,18 @@ while ($kategori = mysqli_fetch_array($result)) {
 // Check if form is submitted for user update, then redirect to homepage after update
 if (isset($_POST['update'])) {
     $id = $_POST['id'];
-
-    $nama_kategori = @$_POST['kategori'];
-    $result = mysqli_query($mysqli, "UPDATE kategori_artikel SET nama_kategori='$nama_kategori' WHERE id=$id");
+    $username = @$_POST['username'];
+    $password = @$_POST['password'];
+    $nama_operator = @$_POST['nama_operator'];
+    if ($password) {
+        $result = mysqli_query($mysqli, "UPDATE tb_admin SET username='$username',nama_operator='$nama_operator',password='$password' WHERE id=$id");
+    } else {
+        $result = mysqli_query($mysqli, "UPDATE tb_admin SET username='$username',nama_operator='$nama_operator' WHERE id=$id");
+    }
     // update user data
 
     // Redirect to homepage to display updated user in list
-    header("Location:../dashboard.php?page=kategori_artikel");
+    header("Location:../dashboard.php?page=users_admin");
 }
 ?>
 
@@ -77,11 +71,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Data kategori</h3>
+                                    <h3 class="card-title">Data Users</h3>
 
                                     <div class="card-tools">
                                         <!-- This will cause the card to maximize when clicked -->
-                                        <a href="<?= $base_url_admin ?>/dashboard.php?page=kategori_artikel" class="btn btn-info">Kembali</a>
+                                        <a href="<?= $base_url_admin ?>/dashboard.php?page=users_admin" class="btn btn-info">Kembali</a>
                                     </div>
                                     <!-- /.card-tools -->
                                 </div>
@@ -91,8 +85,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <form  method="post">
                                         <input type="hidden" name="id" value="<?= $id ?>">
                                         <div class="form-group">
-                                            <label for="kategori">kategori</label>
-                                            <input type="text" class="form-control" value="<?= $row_kategori ?>" name="kategori" required <?php if ($row_kategori == 'admin') { ?> readonly <?php } ?>>
+                                            <label for="username">Username</label>
+                                            <input type="text" class="form-control" value="<?= $row_username ?>" name="username" required <?php if ($row_username == 'admin') { ?> readonly <?php } ?>>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nama_operator">Nama Operator</label>
+                                            <input type="text" class="form-control" value="<?= $row_nama_operator ?>" name="nama_operator" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password">Password</label>
+                                            <input type="password" class="form-control" value="" name="password">
+                                            <span class="help-block"> Kosongkan bila tidak di ubah</span>
                                         </div>
                                         <button class="btn btn-primary" type="submit" name="update">Simpan</button>
 

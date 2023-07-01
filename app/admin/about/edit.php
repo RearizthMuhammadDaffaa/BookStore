@@ -6,6 +6,19 @@ include('session.php');
 // Getting id from url
 $id = @$_GET['id'];
 
+$usertype = $_SESSION['usertype'];
+$username = $_SESSION['username'];
+
+
+
+if (empty($username) || ($usertype == '1')) {
+    echo "
+  <script>alert('silahkan logout dan login terlebih dahulu sebagai admin')</script>
+  ";
+    header('Location: ../sign.php');
+    exit;
+}
+
 // Fetech user data based on id
 $result = mysqli_query($mysqli, "SELECT * FROM tb_about WHERE id=$id");
 

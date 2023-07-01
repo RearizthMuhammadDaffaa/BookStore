@@ -1,5 +1,18 @@
 <?php
 include_once("../config.php");
+$usertype = $_SESSION['usertype'];
+$username = $_SESSION['username'];
+
+
+
+if (empty($username) || ($usertype == '1')) {
+    echo "
+  <script>alert('silahkan logout dan login terlebih dahulu sebagai admin')</script>
+  ";
+    header('Location: ../sign.php');
+    exit;
+}
+
 
 ?>
 <!-- Main content -->

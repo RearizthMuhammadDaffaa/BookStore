@@ -109,19 +109,19 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
           <a class="text-muted" href="#"></a>
         </div>
         <div class="col-4 text-center">
-          <a class="blog-header-logo text-dark" href="#">Farmer</a>
+          <a class="blog-header-logo text-dark" href="#">BookStore</a>
         </div>
 
         <div class="col-4 d-flex justify-content-end align-items-center">
-          <div class="dropdown mx-4">
+          <div class="dropdown mr-4">
             <a class=" dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
               <img src="../uploads/no-photo.jpg" class="img-fluid rounded-circle" height="30" width="30" alt="">
               <span><?= $_SESSION['username']; ?></span>
             </a>
 
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">Edit Profile</a>
-              <a class="dropdown-item" href="#">Isi saldo</a>
+              <a class="dropdown-item" href="../profile.php">Edit Profile</a>
+              <a class="dropdown-item" href="../order.php">order</a>
               <a class="dropdown-item" href="logout.php">Logout</a>
             </div>
           </div>
@@ -140,7 +140,7 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
         <a class="p-2 text-muted" href="../index.php">Beranda</a>
         <a class="p-2 text-muted" href="">Artikel</a>
         <a class="p-2 text-muted" href="../daftarbuku/index.php">Daftar Buku</a>
-        <a class="p-2 text-muted" href="">Gallery</a>
+        <a class="p-2 text-muted" href="../Gallery/index.php">Gallery</a>
         <?php
         $menu = mysqli_query($mysqli, "SELECT * from tb_menu");
         while ($data_menu = mysqli_fetch_array($menu)) {
@@ -149,7 +149,7 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
 
         <?php }
         ?>
-        ?>
+
       </nav>
     </div>
 
@@ -251,19 +251,21 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
 
         </div>
         <div class="row mb-2 product-wrapper" id="artikelWrapper">
-
+          <div class="container text-right">
+           <a href="../index.php" class="text-primary lg-mr-3">Kembali</a>
+          </div>
           <?php
           foreach ($new_artikel as $data) {
           ?>
 
-            <div class="col-md-6 ">
+            <div class="col-md-6 mt-4">
               <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                 <div class="col p-4 d-flex flex-column position-static">
 
                   <strong class="d-inline-block mb-2 text-primary"><?= $data['nama_kategori'] ?></strong>
                   <h3 class="mb-0"><?= $data['judul_artikel']; ?></h3>
-                  <div class="mb-1 text-muted"><?= date('d-M-Y', strtotime($data['created_time'])) ?></div>
-                  <p class="card-text mb-auto text-justify"><?= substr($data['content_artikel'], 0, 30) . '...' ?></p>
+                  <div class="mb-1 text-muted text-break"><?= date('d-M-Y', strtotime($data['created_time'])) ?></div>
+                  <p class="card-text mb-auto text-justify text-break"><?= substr($data['content_artikel'], 0, 50) . '...' ?></p>
                   <a href="artikelDetail.php?id=<?= $data['id']; ?>" class="stretched-link">Continue reading</a>
                 </div>
                 <div class="col-auto  d-lg-block">
@@ -272,7 +274,7 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
                        <img src="./admin/artikel/image/ <?= $data["cover"]; ?>" alt="Gambar" class="img-square elevation-1" style="width: 60px; height: 50px; margin-left: auto; margin-right: auto;">
                                       </div>
                                         </div>     -->
-                  <img width="200px" class="img-thumbnail " src="../admin/artikel/image/<?= $data['cover']; ?>" alt="">
+                  <img width="250px" class=" " height="100%" src="../admin/artikel/image/<?= $data['cover']; ?>" alt="">
                 </div>
               </div>
             </div>

@@ -11,13 +11,14 @@ $base_url = "http://localhost/BOOKSTORE/app";
 if (isset($_POST['register'])) {
   $username = mysqli_real_escape_string($mysqli, $_POST['username']);
   $passwoard = mysqli_real_escape_string($mysqli, md5($_POST['password']));
-  $select = mysqli_query($mysqli, "SELECT * FROM tb_user WHERE username = '$username' AND password = '$passwoard'") or die('query failed');
+  $nama = mysqli_real_escape_string($mysqli,$_POST['nama']);
+  $select = mysqli_query($mysqli, "SELECT * FROM tb_admin WHERE username = '$username' AND password = '$passwoard'") or die('query failed');
   if (mysqli_num_rows($select) > 0) {
     echo "<script>
     alert('username sudah ada')
     </script>";
   } else {
-    mysqli_query($mysqli, "INSERT INTO tb_user(username,password) VALUES('$username','$passwoard')") or die('query failed');
+    mysqli_query($mysqli, "INSERT INTO tb_admin(username,password,nama_operator,usertype) VALUES('$username','$passwoard','$nama',1)") or die('query failed');
     echo "<script>
     alert('register berhasil')
     </script>";
@@ -57,6 +58,14 @@ if (isset($_POST['register'])) {
         <form action="register.php" method="post">
           <div class="input-group mb-3">
             <input type="text" name="username" class="form-control" placeholder="username" required>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="text" name="nama" class="form-control" placeholder="nama" required>
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-user"></span>
@@ -108,6 +117,11 @@ if (isset($_POST['register'])) {
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- AdminLTE App -->
   <script src="dist/js/adminlte.min.js"></script>
+
+  <!-- modal -->
+
+  <!--  -->
+
 </body>
 
 </html>

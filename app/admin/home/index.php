@@ -7,6 +7,23 @@ error_reporting(E_ALL);
 require_once(__DIR__ . "../../../config.php");
 require 'session.php';
 
+$usertype = $_SESSION['usertype'];
+$username = $_SESSION['username'];
+
+
+
+if (empty($username) || ($usertype == '1')) {
+    echo "
+  <script>alert('silahkan logout dan login terlebih dahulu sebagai admin')</script>
+  ";
+    header('Location: ../sign.php');
+    exit;
+}
+
+
+
+
+
 $kategori = mysqli_query($mysqli, 'SELECT count(*) jml FROM kategori_artikel');
 $row_kategori = mysqli_fetch_assoc($kategori);
 $artikel = mysqli_query($mysqli, 'SELECT count(*) jml FROM tb_artikel');
@@ -17,7 +34,7 @@ $buku = mysqli_query($mysqli, 'SELECT count(*) jml FROM data_buku');
 $row_buku = mysqli_fetch_assoc($buku);
 
 
-$test = mysqli_query($mysqli,"SELECT terjual FROM data_buku");
+$test = mysqli_query($mysqli, "SELECT terjual FROM data_buku");
 $judul_buku = mysqli_fetch_assoc($test);
 
 
@@ -99,24 +116,22 @@ $judul_buku = mysqli_fetch_assoc($test);
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-   
-   
-   const user = <?php echo json_encode($judul_buku); ?>;
-   const buku = <?php echo json_encode($row_buku); ?>;
+    const user = <?php echo json_encode($judul_buku); ?>;
+    const buku = <?php echo json_encode($row_buku); ?>;
     const data = {
         labels: [],
         datasets: [{
-            label: '# of Votes',
-            data: user,
-            borderWidth: 1
-        },
-        {
-            label: '# of Votes',
-            data: buku,
-            borderWidth: 1
-        },
-        
-    ]
+                label: '# of Votes',
+                data: user,
+                borderWidth: 1
+            },
+            {
+                label: '# of Votes',
+                data: buku,
+                borderWidth: 1
+            },
+
+        ]
     }
 
     const config = {
@@ -135,6 +150,4 @@ $judul_buku = mysqli_fetch_assoc($test);
         document.getElementById('myChart'),
         config
     )
-
-   
 </script>

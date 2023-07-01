@@ -4,6 +4,18 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 include_once("../../config.php");
 include('session.php');
+$usertype = $_SESSION['usertype'];
+$username = $_SESSION['username'];
+
+
+
+if (empty($username) || ($usertype == '1')) {
+    echo "
+  <script>alert('silahkan logout dan login terlebih dahulu sebagai admin')</script>
+  ";
+    header('Location: ../sign.php');
+    exit;
+}
 
 define('SITE_ROOT', realpath(dirname(__FILE__)));
 // Display selected user data based on id

@@ -7,6 +7,22 @@ require_once(__DIR__ . "../../../config.php");
 // include('session.php');
 require 'session.php';
 
+$usertype = $_SESSION['usertype'];
+$username = $_SESSION['username'];
+
+
+
+if (empty($username) || ($usertype == '1')) {
+    echo "
+  <script>alert('silahkan logout dan login terlebih dahulu sebagai admin')</script>
+  ";
+    header('Location: ../sign.php');
+    exit;
+}
+
+
+
+
 if (isset($_POST['submit'])) {
     $nama_kategori = @$_POST['nama_kategori'];
     $sql = "SELECT * FROM kategori WHERE nama_kategori='$nama_kategori'";

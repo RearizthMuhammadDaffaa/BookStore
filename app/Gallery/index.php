@@ -172,8 +172,8 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori");
         $menu = mysqli_query($mysqli, "SELECT * from tb_menu");
         while ($data_menu = mysqli_fetch_array($menu)) {
         ?>
-          <a class="p-2 text-muted" href="#"></a>
-          <?= $data_menu['nama_menu'] ?>
+          <a class="p-2 text-muted" href="#"> <?= $data_menu['nama_menu'] ?></a>
+
         <?php }
         ?>
       </nav>
@@ -258,19 +258,21 @@ $kategori = mysqli_query($mysqli, "SELECT * from kategori");
     </div>
 
     <div class="row">
-
-      <?php 
-      $gallery = mysqli_query($mysqli,"SELECT * FROM tb_gallery");
-      while($data = mysqli_fetch_array($gallery)):
+      <div class="container text-right">
+        <a href="../index.php" class="text-primary lg-mr-3">Kembali</a>
+      </div>
+      <?php
+      $gallery = mysqli_query($mysqli, "SELECT * FROM tb_gallery");
+      while ($data = mysqli_fetch_array($gallery)) :
       ?>
-      <div class="col-12 col-md-6 col-lg-4 mb-4">
-        <div class="card">
-          <img class="card-img-top" src="../admin/gallery/image/<?= $data['gambar']; ?>" width="200px" height="200" alt="Card image cap">
-          <div class="card-body">
-            <p class="card-text"><?= $data['nama']; ?></p>
+        <div class="col-12 col-md-6 col-lg-4 mb-4 mt-4">
+          <div class="card">
+            <img class="card-img-top" src="../admin/gallery/image/<?= $data['gambar']; ?>" width="200px" height="200" alt="Card image cap">
+            <div class="card-body">
+              <p class="card-text"><?= $data['nama']; ?></p>
+            </div>
           </div>
         </div>
-      </div>
       <?php endwhile ?>
     </div>
 

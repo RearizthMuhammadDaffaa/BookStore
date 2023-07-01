@@ -19,11 +19,17 @@ if (isset($_POST['submit'])) {
     $result = mysqli_query($mysqli, $sql);
     if ($result->num_rows > 0) {
         $row = mysqli_fetch_assoc($result);
-        $_SESSION['username'] = $row['username'];
-        $_SESSION['id'] = $row['id'];
-       
+        if ($row['usertype'] == '0') {
+            $_SESSION['usertype'] = $row['usertype'];
+            $_SESSION['username'] = $row['username'];
+            $_SESSION['id'] = $row['id'];
+            header("Location: ../admin/dashboard.php?page=home");
+        }else{
+            echo "<script>alert('login terlebih dahulu sebagai admin')</script>";
+            
+        }
 
-        header("Location: ../admin/dashboard.php?page=home");
+
     } else {
         echo "<script>alert('Username atau password Anda salah. Silahkan coba lagi!')</script>";
     }
@@ -75,17 +81,17 @@ if (isset($_POST['submit'])) {
                         </div>
                     </div>
                     <div class="row aligns-item-center">
-                        
+
                         <!-- /.col -->
                         <div class="col-4 offset-1">
                             <button type="submit" name="submit" class="btn btn-primary btn-block">Sign In</button>
                         </div>
-                        <div class="col-6 text-center mt-1" >
-                           <a href="<?= $base_url_admin; ?>/login.php">Login sebagai User</a>
+                        <div class="col-6 text-center mt-1">
+                            <a href="<?= $base_url_admin; ?>/login.php">Login sebagai User</a>
                         </div>
                         <!-- /.col -->
                     </div>
-                    
+
                 </form>
 
                 <div class="social-auth-links text-center mt-2 mb-3">

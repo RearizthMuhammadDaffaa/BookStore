@@ -37,7 +37,7 @@ while ($data = mysqli_fetch_array($buku)) {
   <div class="col-md-4 ">
     <div class="card mx-auto mt-2" style="width: 18rem;">
       <form action="" method="post">
-        <img src="../admin/buku/image/<?= $data['gambar']; ?>" class="card-img-top img-fluid" alt="...">
+        <img src="../admin/buku/image/<?= $data['gambar']; ?>" width="100px" height="200px" class="card-img-top " alt="...">
         <div class="card-body text-center">
           <h5 class="card-title"><?= $data['judul_buku']; ?></h5>
           <p class="card-text">deskripsi : <?= $data['deskripsi']; ?></p>

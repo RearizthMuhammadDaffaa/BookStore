@@ -10,12 +10,25 @@ define('SITE_ROOT', realpath(dirname(__FILE__)));
 // Getting id from url
 $id = @$_GET['id'];
 
+
+$usertype = $_SESSION['usertype'];
+$username = $_SESSION['username'];
+
+
+
+if (empty($username) || ($usertype == '1')) {
+    echo "
+  <script>alert('silahkan logout dan login terlebih dahulu sebagai admin')</script>
+  ";
+    header('Location: ../sign.php');
+    exit;
+}
+
 // Fetech user data based on id
 $res_artikel = mysqli_query($mysqli, "SELECT * FROM tb_social WHERE id= $id ");
 
 while ($artikel = mysqli_fetch_array($res_artikel)) {
     $row_nama_sosmed = $artikel['nama_sosmed'];
-    
 }
 ?>
 <?php
@@ -23,12 +36,12 @@ while ($artikel = mysqli_fetch_array($res_artikel)) {
 // Check if form is submitted for user update, then redirect to homepage after update
 if (isset($_POST['update'])) {
     $id = $_POST['id'];
-   
+
     $user_id = $_SESSION['id'];
-   
+
     $nama_sosmed = @$_POST['nama_sosmed'];
-    
-    
+
+
     $ekstensi_diperbolehkan    = array('png', 'jpg', 'jpeg');
     $nama = $_FILES['file']['name'];
     $x = explode('.', $nama);
@@ -46,13 +59,13 @@ if (isset($_POST['update'])) {
         echo 'EKSTENSI FILE YANG DI UPLOAD TIDAK DI PERBOLEHKAN';
         $file_name = '';
     }
-   
-        $file_name = $nama;
-        $result = mysqli_query($mysqli, "UPDATE tb_social SET icon='$file_name',nama_sosmed='$nama_sosmed'
+
+    $file_name = $nama;
+    $result = mysqli_query($mysqli, "UPDATE tb_social SET icon='$file_name',nama_sosmed='$nama_sosmed'
     WHERE id=$id");
-   
-   
-    
+
+
+
 
     // update user data
 
@@ -109,15 +122,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                                 <div class="card-body">
 
-                                    <form  method="post" enctype="multipart/form-data">
+                                    <form method="post" enctype="multipart/form-data">
                                         <input type="hidden" name="id" value="<?= $id ?>">
                                         <div class="form-group">
                                             <label for="judul_artikel">nama sosmed</label>
                                             <input type="text" class="form-control" value="<?= $row_nama_sosmed ?>" name="nama_sosmed" required>
                                         </div>
 
-                                        
-                                       
+
+
                                         <input type="file" name="file">
                                         <button class="btn btn-primary" type="submit" name="update">Simpan</button>
 

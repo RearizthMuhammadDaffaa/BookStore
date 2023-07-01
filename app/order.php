@@ -20,97 +20,13 @@ if (!isset($_SESSION['username'])) {
 
 $userid = $_SESSION['id'];
 
-if (isset($_POST['update_cart'])) {
-  $updated_quantity = $_POST['updated_quantity'];
-  $update_id = $_POST['cart_id'];
-  mysqli_query($mysqli, "UPDATE cart set quantity = '$updated_quantity' WHERE id = '$update_id'") or die('queey failed');
-}
-if (isset($_POST['isi_saldo'])) {
-  $updated_saldo = $_POST['input_saldo'];
-  mysqli_query($mysqli, "UPDATE tb_admin set saldo = saldo +  '$updated_saldo' WHERE id = '$userid'") or die('queey failed');
-}
 
-if (isset($_GET['delete_all'])) {
-  mysqli_query($mysqli, "DELETE FROM cart WHERE user_id = '$userid'") or die("wuawe");
-  header('location: cart.php');
-}
-if (isset($_GET['remove'])) {
-  $remove = $_GET['remove'];
-  mysqli_query($mysqli, "DELETE FROM cart WHERE id = '$remove'") or die("wuawe");
-  header('location: cart.php');
-}
-
-
-
-if (isset($_POST['checkout'])) {
-
-
-  try {
-    $mysqli->begin_transaction();
-    $cart = mysqli_query($mysqli, "SELECT * from cart WHERE user_id ='$userid'");
-    $data_buku = mysqli_query($mysqli, "SELECT cart.*,data_buku.jumlah_buku FROM cart INNER 
-                                         JOIN data_buku ON cart.id_buku = data_buku.id WHERE cart.user_id = '$userid'   
-    ");
-    $grand_total = 0;
-
-
-
-
-    $data_user = mysqli_query($mysqli, "SELECT saldo from tb_admin WHERE id = '$userid'");
-    $getSaldo = $data_user->fetch_assoc();
-    $saldo = $getSaldo['saldo'];
-
-    while ($data = mysqli_fetch_array($cart)) {
-      $id_buku = $data['id_buku'];
-      $subtotal = ($data['harga'] * $data['quantity']);
-      $grand_total += $subtotal;
-    }
-
-
-    while ($data = mysqli_fetch_array($data_buku)) {
-      $quantity = $data['quantity'];
-      $idbuku = $data['id_buku'];
-      $judul_buku = $data['judul_buku'];
-      $created_time = date("Y-m-d H:i:s");
-      $subtotal = ($data['harga'] * $data['quantity']);
-      $checkStock = ($data['jumlah_buku'] - $quantity);
-      if ($checkStock >= 0 && $saldo >= $grand_total) {
-        mysqli_query($mysqli, "UPDATE tb_admin SET saldo = saldo - $grand_total WHERE id = $userid");
-
-        $result = mysqli_query($mysqli, "UPDATE data_buku set jumlah_buku = jumlah_buku - $quantity , terjual = terjual + $quantity  WHERE id = '$idbuku'");
-        mysqli_query($mysqli, "INSERT INTO riwayat_transaksi(user_id,judul_buku,created_time,jumlah,total_harga) 
-                              VALUES('$userid','$judul_buku','$created_time','$quantity','$subtotal')
-        ");
-        mysqli_query($mysqli, "DELETE FROM cart WHERE user_id = '$userid'");
-        echo "<script>alert('transaksi berhasil ')</script>";
-        $mysqli->commit();
-      } else {
-        echo "<script>alert('maaf mungkin saldo anda tidak cukup atau stok buku sudah habis')</script>";
-        $mysqli->rollback();
-      }
-    }
-
-
-
-    // if ($saldo >= $grand_total) {
-
-    //   $mysqli->commit();
-    // } else {
-
-    //   echo "<script>alert('maaf saldo anda kurang')</script>";
-    //   $mysqli->rollback();
-    // }
-  } catch (Exception $e) {
-    echo "Terjadi kesalahan: " . $e->getMessage();
-    $mysqli->rollback();
-  }
-}
 
 
 $kategori = mysqli_query($mysqli, "SELECT * from kategori_artikel");
 $about = mysqli_query($mysqli, "SELECT * FROM tb_about");
 $menu = mysqli_query($mysqli, "SELECT * from tb_menu");
-$cart = mysqli_query($mysqli, "SELECT * from cart WHERE user_id ='$userid'");
+$cart = mysqli_query($mysqli, "SELECT * from riwayat_transaksi WHERE user_id ='$userid'");
 ?>
 <!doctype html>
 <html lang="en">
@@ -226,8 +142,8 @@ $cart = mysqli_query($mysqli, "SELECT * from cart WHERE user_id ='$userid'");
             </a>
 
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="profile.php">Edit Profile</a>
-              <a class="dropdown-item" href="order.php">order</a>
+              <a class="dropdown-item" href="#">Edit Profile</a>
+              <a class="dropdown-item" href="#">Isi saldo</a>
               <a class="dropdown-item" href="logout.php">Logout</a>
             </div>
           </div>
@@ -256,9 +172,9 @@ $cart = mysqli_query($mysqli, "SELECT * from cart WHERE user_id ='$userid'");
       </nav>
     </div>
   </div>
-  <h1 class="text-center mt-5">Shopping cart</h1>
+  <h1 class="text-center mt-5">Order</h1>
   <div class="container text-right">
-    <a href="../index.php" class="text-primary lg-mr-3">Kembali</a>
+    <a href="index.php" class="text-primary lg-mr-3">Kembali</a>
   </div>
   <div class="container mt-5">
 
@@ -266,12 +182,10 @@ $cart = mysqli_query($mysqli, "SELECT * from cart WHERE user_id ='$userid'");
     <table class="table table-container">
       <thead class="thead-dark">
         <tr>
-          <th>gambar</th>
           <th scope="col">judul buku</th>
-          <th scope="col">harga</th>
+          <th scope="col">Tanggal Transakasi</th>
           <th scope="col">jumlah</th>
           <th scope="col">total harga</th>
-          <th scope="col">action</th>
         </tr>
       </thead>
       <tbody>
@@ -281,54 +195,21 @@ $cart = mysqli_query($mysqli, "SELECT * from cart WHERE user_id ='$userid'");
         $grandtotal = 0;
         foreach ($cart as $ct) : ?>
           <tr>
-            <td><img src="admin/buku/image/<?= $ct['gambar']; ?>" width="40" height="20" alt=""></td>
+
             <td><?= $ct['judul_buku']; ?></td>
-            <td><?= $ct['harga']; ?></td>
-            <td>
-              <form action="" method="post">
-                <input type="hidden" name="cart_id" value="<?= $ct['id']; ?>">
-                <input type="hidden" name="idbuku" value="<?= $ct['id_buku']; ?>">
-                <input type="number" name="updated_quantity" value="<?= $ct['quantity']; ?>" class="input-cart">
-                <button type="submit" name="update_cart" class="btn btn-warning btn-updated">updated</button>
-              </form>
-            </td>
-            <td>Rp.<?= $sub_total = ($ct['harga'] * $ct['quantity']); ?></td>
-            <td><a href="cart.php?remove=<?= $ct['id']; ?>" class="delete-btn" onclick="return confirm('are you sure')">Remove</a></td>
+            <td><?= $ct['created_time']; ?></td>
+            <td><?= $ct['jumlah']; ?></td>
+            <td>Rp.<?= $ct['total_harga'] ?></td>
+
           </tr>
         <?php
-          $grandtotal += $sub_total;
+
         endforeach ?>
-        <tr class="table-bottom">
-          <td colspan="4">grand total :</td>
-          <td>Rp <?= $grandtotal; ?></td>
-          <td><a href="cart.php?delete_all" onclick="return confirm('delete all from cart?')" class="delete-btn <?= ($grand_total > 1) ? '' : 'disabled'; ?>">delete all</a></td>
-        </tr>
-        <tr>
-          <td colspan="4">Saldo Anda :</td>
-          <td>Rp.
-            <?php
-            $result = mysqli_query($mysqli, "SELECT saldo FROM tb_admin WHERE id = '$userid'");
-            while ($data = mysqli_fetch_array($result)) {
-              echo $data['saldo'];
-            }
-            ?>
-          </td>
-          <td>
-            <form action="" method="post">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                Tambah Saldo
-              </button>
-            </form>
-          </td>
-        </tr>
+
+
       </tbody>
     </table>
 
-    <div class="col-12  d-flex justify-content-center my-3">
-      <form action="" method="post">
-        <button class="btn btn-primary btn-checkout" name="checkout" type="submit">Checkout</button>
-      </form>
-    </div>
 
 
   </div>
@@ -374,36 +255,7 @@ $cart = mysqli_query($mysqli, "SELECT * from cart WHERE user_id ='$userid'");
   </footer>
 
 
-  <!-- modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Tambah Saldo</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="input-group input-group-sm mb-3">
-            <form action="" method="post">
-              <input type="number" name="input_saldo" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-              <div class="input-group-prepend">
-                <button type="submit" name="isi_saldo" class=" btn-primary">Save changes</button>
-              </div>
-            </form>
 
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Akhir modal -->
 
 
 
